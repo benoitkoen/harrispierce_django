@@ -9,9 +9,9 @@ soup = BeautifulSoup(page, 'lxml')
 #a = soup.find_all('a', {'class': 'subPrev headline'})
 art = soup.find_all('article', {'class': 'hed-summ'})
 
-print(art[0])
+#print(art[0])
 
-"""
+
 for el in art:
     li = el.find_all('a', {'class': 'subPrev headline'})
     for a in li:
@@ -28,6 +28,5 @@ for el in art:
     else:
         print('void')
         
-"""
 
 
