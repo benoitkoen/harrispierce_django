@@ -1,6 +1,11 @@
 {% extends 'harrispierce/base.html' %}
 
 {%block blockname %}
+
+{% if form.error %}
+    <p class="error"> Sorry, invalid username or password.</p>
+{% endif %}
+
     <div>LOGIN</div>
 
     <form action="" method="post">{% csrf_token %} {{ form.as_p }}

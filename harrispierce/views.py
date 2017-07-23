@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import get_object_or_404, render, loader
+from django.shortcuts import get_object_or_404, render, loader, redirect
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.urls import reverse
+from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth import authenticate, login
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -47,11 +48,39 @@ class LoginView(generic.FormView):
     model = User
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
+    success_url = reverse_lazy('index_perso')
 
-    def form_valid(self, form):
-        # This method is called when valid form data has been POSTed. # It should return an HttpResponse.
-        # form.send_email()
-        return  # super(ContactView, self).form_valid(form)
+    def get(self, request):
+        pass
+        #form = self.form_class(request.POST.get)
+
+
+
+        #return render(request, self.template_name, {'form': form})
+    """
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+
+            # user exists or not
+            user = authenticate(username=email, password=password)
+
+            if user is not None:
+
+                if user.is_active:
+                    # user signified to system as logged in
+                    login(request, user)
+                    return redirect('index_perso')
+
+        return render(request, self.template_name, {'form': form})
+    """
 
 
 @method_decorator(login_required, name='dispatch')
@@ -69,15 +98,52 @@ class SearchFormView(generic.FormView):
     model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/search_form.html'
+    success_url = reverse_lazy('display_search')
 
 
-class DisplaySearchView(generic.FormView):
+class DisplaySearchView(generic.ListView):
     model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/display_search.html'
 
 
 class NewUserView(generic.FormView):
+
     model = User
     form_class = NewUserForm
     template_name = 'harrispierce/new_user/new_user.html'
+    success_url = reverse_lazy('new_user_thanks')
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+
+            # user exists or not
+            user = authenticate(username=email, password=password)
+
+            if user is not None:
+
+                if user.is_active:
+                    # user signified to system as logged in
+                    login(request, user)
+                    return redirect('index')#('index_perso')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class NewUserThanksView(generic.ListView):
+
+    #model = User
+    template_name = 'harrispierce/new_user/new_user_thanks.html'
+    success_url = reverse_lazy('index')
