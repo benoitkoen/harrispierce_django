@@ -29,6 +29,9 @@ class Article(models.Model):
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
+    def get_absolute_url(self):
+        return reverse('article-detail', kwargs={'pk': self.pk})
+
 
 class User(models.Model):
     user_name = models.CharField(max_length=200)

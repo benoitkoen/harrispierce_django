@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>display_search</title>
-</head>
-<body>
+{% extends 'harrispierce/base.html' %}
 
-</body>
-</html>
+{%block blockname %}
+    <div>DISPLAY SEARCH</div>
+
+    <ul>
+    {% for article in latest %}
+    <li>{{ article.pub_date }}: {{ article.title }}</li> {% endfor %}
+    </ul>
+{% endblock %}

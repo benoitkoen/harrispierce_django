@@ -1,7 +1,9 @@
 {% extends 'harrispierce/base.html' %}
 
 {%block blockname %}
-    <div>NEW USER</div>
+    <div>Search</div>
+
     <form action="" method="post">{% csrf_token %} {{ form.as_p }}
-    <input type="submit" value="Sign Up" /> </form>
+    <input type="submit" value="Search" onclick="window.location.href='login/display_search.html'"/>
+    </form>
 {% endblock %}

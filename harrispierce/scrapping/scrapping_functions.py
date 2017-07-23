@@ -21,7 +21,6 @@ def scrapwsj1(url):
 
     articles.append(list(big)[0])
     articles = articles[:-1]
-    print(articles[-1])
 
     for article in articles:
 
@@ -71,7 +70,11 @@ def scrapwsj2(url):
         if image is not None:
             result['images'].append(image.get('src'))
         else:
-            result['images'].append('void')
+            image = image_div.find('meta')
+            if image is not None:
+                result['images'].append(image.get('content'))
+            else:
+                result['images'].append('void')
 
         div = image_div.findNext('div', {'class': 'wsj-card-body clearfix'}) # SIBLINGS oF H3 pour image et et teaser
         teaser = div.find('p', {'class': 'wsj-summary dj-sg wsj-card-feature'}).find('span').text
@@ -79,6 +82,43 @@ def scrapwsj2(url):
             result['teasers'].append(teaser)
         else:
             result['teasers'].append('no preview')
+
+    return result
+
+
+def scrapwsj3(url):
+
+    soup = get_raw_data(url)
+    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+
+    top_section = soup.find('div', {'class': 'buckets-bottom noImage-border-wrapper'})
+
+    articles = top_section.find_all('article', {'class': 'hed-summ'})
+    big = top_section.find_all('article', {'class': 'lead-headline hed-summ'})
+
+    articles.append(list(big)[0])
+
+    for article in articles:
+
+        if article.find('div', {'class': 'text-wrapper'}) is None:
+            continue
+        else:
+            a = article.find('a', {'class': 'subPrev headline'})
+
+            result['titles'].append(a.text)
+            result['hrefs'].append(a.get('href'))
+
+            div = article.find('div', {'class': 'text-wrapper'})
+            if div is not None:
+                result['teasers'].append(div.find('p', {'class': 'summary'}).text)
+            else:
+                result['teasers'].append('no preview')
+
+            image = article.find('img')
+            if image is not None:
+                result['images'].append(image.get('data-src'))
+            else:
+                result['images'].append('void')
 
     return result
 
@@ -136,6 +176,35 @@ def scrapnyt1(url):
 
                 p = article.find('p', {'class': 'summary'})
                 result['teasers'].append(p.text)
+
+    return result
+
+
+def scrapnyt2(url):
+
+    soup = get_raw_data(url)
+    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+
+    col = soup.find('div', {'class': 'columnGroup last'})
+    articles = col.find_all('div', {'class': 'story'})
+
+    for article in articles:
+
+        h3 = article.find('h3')
+        title = h3.find('a').text.strip()
+        href = h3.find('a').get('href')
+
+        result['titles'].append(title)
+        result['hrefs'].append(href)
+
+        p = article.find('p', {'class': 'summary'})
+        result['teasers'].append(p.text.strip())
+
+        image = article.find('img')
+        if image is not None:
+            result['images'].append(image.get('src'))
+        else:
+            result['images'].append('void')
 
     return result
 

@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>display</title>
-</head>
-<body>
+{% extends 'harrispierce/base.html' %}
 
-</body>
-</html>
+{%block blockname %}
+    <div>DISPLAY</div>
+
+    <h1>{{ day }}</h1>
+    <ul>
+    {% for article in object_list %}
+    <li>{{ article.pub_date|date:"F j, Y" }}: {{ article.title }}</li> {% endfor %}
+{% endblock %}
+
+{%block contentblock %}
+    <h1>Articles</h1>
+    <ul>
+    {% for article in object_list %}
+    <li>{{ article.pub_date|date }} - {{ article.headline }}</li> {% empty %}
+    <li>No articles yet.</li> {% endfor %}
+    </ul>
+{% endblock %}

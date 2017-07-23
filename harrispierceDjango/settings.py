@@ -55,7 +55,7 @@ ROOT_URLCONF = 'harrispierceDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [],#os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,12 +76,8 @@ WSGI_APPLICATION = 'harrispierceDjango.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',#'django.db.backends.mysql',
-        'NAME': 'db677888126',
-        'USER': 'dbo677888126',
-        'PASSWORD': 'Harrispierce94',
-        'HOST': 'db677888126.db.1and1.com',
-        'PORT': '3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
