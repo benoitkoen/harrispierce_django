@@ -45,42 +45,39 @@ class DisplayView(generic.DayArchiveView):
 
 
 class LoginView(generic.FormView):
+
     model = User
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
-    success_url = reverse_lazy('index_perso')
+    success_url = reverse_lazy('index')
 
-    def get(self, request):
-        pass
-        #form = self.form_class(request.POST.get)
-
-
-
-        #return render(request, self.template_name, {'form': form})
     """
+    def get(self, request):
+        print('AJLKJHLKDJAS')
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+    """
+
     def post(self, request):
+
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            user = form.save(commit=False)
-
-            email = form.cleaned_data['email']
+            #user = form.save(commit=False)
+            user_name = form.cleaned_data['user_name']
             password = form.cleaned_data['password']
-            user.set_password(password)
-            user.save()
 
             # user exists or not
-            user = authenticate(username=email, password=password)
+            user = authenticate(username=user_name, password=password)
 
             if user is not None:
 
                 if user.is_active:
                     # user signified to system as logged in
                     login(request, user)
-                    return redirect('index_perso')
+                    return redirect('index_perso')#index_perso
 
         return render(request, self.template_name, {'form': form})
-    """
 
 
 @method_decorator(login_required, name='dispatch')
@@ -89,6 +86,7 @@ class IndexPersoView(generic.DetailView):
     template_name = 'harrispierce/login/index_perso.html'
 
 
+@login_required(login_url='login')
 class DisplayPersoView(generic.DetailView):
     model = Article
     template_name = 'harrispierce/login/display_perso.html'
@@ -124,26 +122,33 @@ class NewUserView(generic.FormView):
         if form.is_valid():
             user = form.save(commit=False)
 
-            email = form.cleaned_data['email']
+            user_name = form.cleaned_data['user_name']
+            #email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+
+            user.username = user_name
+            user.email = request.POST['email']
             user.set_password(password)
             user.save()
 
             # user exists or not
-            user = authenticate(username=email, password=password)
+            user = authenticate(username=user_name, password=password)
 
             if user is not None:
 
                 if user.is_active:
                     # user signified to system as logged in
                     login(request, user)
-                    return redirect('index')#('index_perso')
+                    return redirect('new_user_thanks')#('index_perso')
 
         return render(request, self.template_name, {'form': form})
 
 
 class NewUserThanksView(generic.ListView):
 
-    #model = User
+    model = Article
     template_name = 'harrispierce/new_user/new_user_thanks.html'
-    success_url = reverse_lazy('index')
+
+    def get_queryset(self):
+        return Article.objects.order_by('-pub_date')[:5]
+

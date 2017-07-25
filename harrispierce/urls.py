@@ -13,7 +13,7 @@ urlpatterns = [
     #    name="display"),
 
     # ex: /polls/5/results/
-    url(r'^(?P<question_id>[0-9]+)/results/$', views.IndexPersoView, name='index_perso'),
+    url(r'^login/index_perso.html/$', views.IndexPersoView.as_view(), name='index_perso'),
     url(r'^(?P<question_id>[0-9]+)/results/$', views.DisplayPersoView, name='display_perso'),
     # ex: /polls/5/vote/
     url(r'^login/search_form.html/$', views.SearchFormView.as_view(), name='search_form'),
@@ -25,5 +25,5 @@ urlpatterns = [
     #    name='display_search'),
     url(r'^login/login.html/$', views.LoginView.as_view(), name='login'),
     url(r'^new_user/new_user.html/$', views.NewUserView.as_view(), name='new_user'),
-    url(r'^new_user/new_user_thanks.html/$', views.NewUserView.as_view(), name='new_user_thanks')
+    url(r'^new_user/new_user_thanks.html/$', views.NewUserThanksView.as_view(), name='new_user_thanks')
 ]

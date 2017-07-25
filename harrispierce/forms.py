@@ -3,12 +3,12 @@ from django.contrib.auth.models import User
 
 
 class LoginForm(forms.Form):
-    #Email = forms.CharField(widget=forms.EmailInput)
+    user_name = forms.CharField(label='Username')
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ['user_name', 'password']
 
     def login(self):
         return
@@ -16,15 +16,13 @@ class LoginForm(forms.Form):
 
 
 class NewUserForm(forms.ModelForm):
+    user_name = forms.CharField(max_length=30, label='Username')
+    email = forms.EmailField(max_length=254, label='Email')  # help_text='Required. Inform a valid email address.'
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['email', 'password']
-
-    #Email = forms.CharField(widget=forms.EmailInput)
-    #Password = forms.CharField(widget=forms.PasswordInput)
-    #Confirm_Password = forms.CharField(widget=forms.PasswordInput)
+        fields = ['user_name', 'email', 'password']
 
     def clean_email(self):
         return
