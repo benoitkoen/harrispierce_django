@@ -80,13 +80,13 @@ class LoginView(generic.FormView):
         return render(request, self.template_name, {'form': form})
 
 
-@method_decorator(login_required, name='dispatch')
-class IndexPersoView(generic.DetailView):
+#@method_decorator(login_required, name='dispatch')
+class IndexPersoView(generic.ListView):
     model = Article
     template_name = 'harrispierce/login/index_perso.html'
 
 
-@login_required(login_url='login')
+#@login_required(login_url='login')
 class DisplayPersoView(generic.DetailView):
     model = Article
     template_name = 'harrispierce/login/display_perso.html'
