@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>index</title>
-</head>
-<body>
+{% extends 'harrispierce/base.html' %}
 
-</body>
-</html>
+{%block blockname %}
+    <div>INDEX</div><br>
+    <button id = "display" onclick="window.location.href='{% url 'display' %}'">Lets Go</button><br>
+{% endblock %}

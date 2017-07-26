@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
+{% extends 'harrispierce/base.html' %}
 
-</body>
-</html>
+{%block blockname %}
+
+{% if form.error %}
+    <p class="error"> Sorry, invalid username or password.</p>
+{% endif %}
+
+    <div>LOGIN</div>
+
+    <form action="" method="post">{% csrf_token %} {{ form.as_p }}
+    <input type="submit" value="Login" /> </form>
+{% endblock %}
+
