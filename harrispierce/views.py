@@ -51,13 +51,6 @@ class LoginView(generic.FormView):
     template_name = 'harrispierce/login/login.html'
     success_url = reverse_lazy('index')
 
-    """
-    def get(self, request):
-        print('AJLKJHLKDJAS')
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
-    """
-
     def post(self, request):
 
         form = self.form_class(request.POST)
