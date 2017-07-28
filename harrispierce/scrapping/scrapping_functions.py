@@ -98,12 +98,21 @@ def scrapwsj3(url):
 
     articles.append(list(big)[0])
 
+    articles = articles[0:5]
+
     for article in articles:
 
         if article.find('div', {'class': 'text-wrapper'}) is None:
             continue
+
         else:
+
             a = article.find('a', {'class': 'subPrev headline'})
+
+            if a is None:
+                a = article.find('a', {'class': 'headline'})
+
+            #print(article, a)
 
             result['titles'].append(a.text)
             result['hrefs'].append(a.get('href'))
@@ -119,6 +128,60 @@ def scrapwsj3(url):
                 result['images'].append(image.get('data-src'))
             else:
                 result['images'].append('void')
+
+
+    return result
+
+
+def scrapwsj4(url):
+
+    soup = get_raw_data(url)
+    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+
+    top_section = soup.find('div', {'class': 'cb-row'})
+
+    articles = top_section.find_all('h3', {'class': 'wsj-headline dj-sg wsj-card-feature heading-3 locked'})
+    big = top_section.find_all('h3', {'class': 'wsj-headline dj-sg wsj-card-feature heading-1 locked'})
+
+    #articles.append(list(big)[0])
+
+    for article in articles:
+
+        a = article.find('a', {'class': 'wsj-headline-link'})
+        result['titles'].append(a.text)
+        result['hrefs'].append(a.get('href'))
+
+        #print(article)
+
+        image_div = article.find_next_sibling('div', {'class': 'right wsj-card-feature wsj-card-media Image'})
+
+        #image = image_div.find('meta')
+        if image_div is not None:
+            image = image_div.find('img', {'class': 'wsj-img-content'})
+
+            div = article.find_next_sibling().find_next_sibling('div', {'class': 'wsj-card-body clearfix'}) # SIBLINGS oF H3 pour image et teaser
+            teaser = div.find('p', {'class': 'wsj-summary dj-sg wsj-card-feature'}).find('span').text
+            result['teasers'].append(teaser)
+
+            #result['images'].append(image.get('content'))
+            result['images'].append(image.get('src'))
+        else:
+            div = article.find_next_sibling('p', {'class': 'wsj-summary dj-sg wsj-card-feature'}) # SIBLINGS oF H3 pour image et teaser
+
+            if div is None:
+                div = article.find_next_sibling().find('p', {'class': 'wsj-summary dj-sg wsj-card-feature'})
+
+            teaser = div.find('span').text
+            result['teasers'].append(teaser)
+
+            #print(article.parent.findChildren())
+                  #find('div', {'class': 'right wsj-card-feature wsj-card-media Image'}))
+            #image =
+            result['images'].append('void')
+
+            #image = image_div.find('img', {'class': 'wsj-img-content'})
+            #result['images'].append(image.get('src'))
+
 
     return result
 
@@ -209,7 +272,66 @@ def scrapnyt2(url):
     return result
 
 
+def scraple(url):
+    soup = get_raw_data(url)
+    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
 
+    col = soup.find('div', {'class': 'article-secondaire'})
+    articles = col.find_all('article', {'class': 'article-small article-medium'})
+
+    big = soup.find('article', {'class': 'article-large'})
+
+    titre = big.find('h2', {'class': 'titre'})
+    title = titre.find('a').text.strip()
+    href = titre.find('a').get('href')
+
+    result['titles'].append(title)
+    result['hrefs'].append(href)
+
+    p = big.find('p', {'class': 'chapo'})
+    result['teasers'].append(p.text.strip())
+
+    image = big.find('picture')
+    if image is not None:
+        result['images'].append('https://www.lesechos.fr'+image.find('source').get('srcset'))
+    else:
+        result['images'].append('void')
+
+    for article in articles:
+
+        titre = article.find('div', {'class': 'titre'})
+        title = titre.find('a').text.strip()
+        href = titre.find('a').get('href')
+
+        result['titles'].append(title)
+        result['hrefs'].append(href)
+
+        p = article.find('p', {'class': 'chapo'})
+        result['teasers'].append(p.text.strip())
+
+        image = article.find('picture')
+        if image is not None:
+            result['images'].append('https://www.lesechos.fr'+image.find('source').get('srcset'))
+        else:
+            result['images'].append('void')
+
+    return result
+
+
+def scraparticle(url):
+
+    soup = get_raw_data(url)
+    #result = {'article': []}
+
+    article = ''
+
+    cont = soup.find('div')#, {'class': 'article__main o-grid-row'})
+    print(soup.find('div'))
+    p = cont.find_all('p')
+    for pa in p:
+        article += p.text
+
+    return article
 
 
 
