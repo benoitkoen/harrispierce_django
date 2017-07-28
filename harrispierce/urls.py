@@ -18,6 +18,7 @@ urlpatterns = [
     # ex: /polls/5/vote/
     url(r'^login/search_form.html/$', views.SearchFormView.as_view(), name='search_form'),
     url(r'^login/display_search.html/$', views.DisplaySearchView.as_view(), name='display_search'),
+    url(r'^harrispierce/must_be_loggedin.html/$', views.MustBeLoggedInView.as_view(), name='must_be_loggedin'),
 
 
     #url(r'^login/display_search.html/$',

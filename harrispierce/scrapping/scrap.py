@@ -44,9 +44,8 @@ t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
 #t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
 
 
-#print(t)
-print(t.iloc[1]['hrefs'])
+#print(t['hrefs'])
+print('url: ', t.iloc[1]['hrefs'])
 
 
-print(scraparticle(t.iloc[1]['hrefs']))
 

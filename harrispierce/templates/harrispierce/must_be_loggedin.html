@@ -1,0 +1,7 @@
+{% extends 'harrispierce/base.html' %}
+
+{%block blockname %}
+    <div>Sorry you must be loggedin for this functionality</div><br>
+    <button id = "go_back" onclick="window.location.href='{% url 'index' %}'">Go back to Index</button><br>
+    <button id = "login" onclick="window.location.href='{% url 'login' %}'">Login</button><br>
+{% endblock %}

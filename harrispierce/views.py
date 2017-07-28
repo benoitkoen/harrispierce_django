@@ -98,6 +98,11 @@ class DisplaySearchView(generic.ListView):
     template_name = 'harrispierce/login/display_search.html'
 
 
+class MustBeLoggedInView(generic.ListView):
+    model = Article
+    template_name = 'harrispierce/must_be_loggedin.html'
+
+
 class NewUserView(generic.FormView):
 
     model = User
@@ -116,7 +121,6 @@ class NewUserView(generic.FormView):
             user = form.save(commit=False)
 
             user_name = form.cleaned_data['user_name']
-            #email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
             user.username = user_name
@@ -132,7 +136,7 @@ class NewUserView(generic.FormView):
                 if user.is_active:
                     # user signified to system as logged in
                     login(request, user)
-                    return redirect('new_user_thanks')#('index_perso')
+                    return redirect('new_user_thanks')
 
         return render(request, self.template_name, {'form': form})
 
