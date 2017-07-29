@@ -2,3 +2,5 @@ Django==1.11.3
 lxml==3.8.0
 pytz==2017.2
 gunicorn==19.7.1
+requests==2.18.2
+

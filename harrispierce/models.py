@@ -18,10 +18,11 @@ class Section(models.Model):
 
 class Article(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    summary = models.CharField(max_length=200)
-    link = models.CharField(max_length=200)
-    image = models.CharField(default='void', max_length=200)
+    title = models.CharField()
+    teaser = models.CharField()
+    href = models.CharField()
+    image = models.CharField(default='void')
+    article = models.CharField()
     pub_date = models.DateTimeField('date published', auto_now_add=True)
 
     def __str__(self):

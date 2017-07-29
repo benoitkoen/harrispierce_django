@@ -1,4 +1,4 @@
-from scrapping_functions import scrapwsj1, scrapwsj2, scrapwsj3, scrapwsj4, scrapft, scrapnyt1, scrapnyt2, scraple, scraparticle
+from scrapping_functions import scrapwsj1, scrapwsj2, scrapwsj3, scrapwsj4, scrapft, scrapnyt1, scrapnyt2, scraple
 
 import pandas as pd
 pd.set_option('display.width', 320)
@@ -43,9 +43,9 @@ t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
 #t = scrap('Wall Street Journal', 'Economy', 'https://www.wsj.com/news/economy')
 #t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
 
-
-#print(t['hrefs'])
-print('url: ', t.iloc[1]['hrefs'])
+print('vfavfvf\n', t)
+print('vfavfvf\n', t.iloc[0]['articles'])
+#print('url: ', t.iloc[1]['hrefs'])
 
 
 

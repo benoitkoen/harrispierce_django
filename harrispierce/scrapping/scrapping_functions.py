@@ -1,5 +1,9 @@
 import urllib2
 from bs4 import BeautifulSoup
+from time import sleep
+
+from scrap_articles import scrap_ft_article
+from harrispierce.processing.clean_articles import clean_article
 
 
 def get_raw_data(url):
@@ -129,7 +133,6 @@ def scrapwsj3(url):
             else:
                 result['images'].append('void')
 
-
     return result
 
 
@@ -182,14 +185,13 @@ def scrapwsj4(url):
             #image = image_div.find('img', {'class': 'wsj-img-content'})
             #result['images'].append(image.get('src'))
 
-
     return result
 
 
 def scrapft(url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': [], 'articles': []}
 
     articles = soup.find_all('li', {'class': 'o-teaser-collection__item o-grid-row'})
 
@@ -212,6 +214,16 @@ def scrapft(url):
                 result['images'].append(image.get('data-srcset').split(' ')[0])
             else:
                 result['images'].append('void')
+
+    login_url = \
+        'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
+
+    for href in result['hrefs']:
+        result['articles'].append(scrap_ft_article(login_url, href))
+        sleep(15)
+
+    for article in result['articles']:
+        result['cleaned_content'].append(clean_article(article))
 
     return result
 
@@ -317,21 +329,6 @@ def scraple(url):
 
     return result
 
-
-def scraparticle(url):
-
-    soup = get_raw_data(url)
-    #result = {'article': []}
-
-    article = ''
-
-    cont = soup.find('div')#, {'class': 'article__main o-grid-row'})
-    print(soup.find('div'))
-    p = cont.find_all('p')
-    for pa in p:
-        article += p.text
-
-    return article
 
 
 
