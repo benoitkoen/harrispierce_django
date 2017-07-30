@@ -45,6 +45,7 @@ t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
 
 print('vfavfvf\n', t)
 print('vfavfvf\n', t.iloc[0]['articles'])
+print('vfavfvf\n', t.iloc[1]['articles'])
 #print('url: ', t.iloc[1]['hrefs'])
 
 
