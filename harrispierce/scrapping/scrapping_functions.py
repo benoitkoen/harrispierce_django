@@ -12,14 +12,15 @@ def get_raw_data(url):
     return soup
 
 
-def scrapwsj1(url):
+def scrapwsj1(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [],
+              'teasers': [], 'images': [], 'article': [], 'cleaned_article': []}
 
     top_section = soup.find('div', {'class': 'buckets-bottom noImage-border-wrapper'})
 
-    articles = top_section.find_all('article', {'class': 'hed-summ'})#'hed heading-2'})
+    articles = top_section.find_all('article', {'class': 'hed-summ'})
 
     big = top_section.find('article', {'class': 'hed-summ no-image lead-headline'})
 
@@ -27,6 +28,10 @@ def scrapwsj1(url):
     articles = articles[:-1]
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
 
         if article.find('div', {'class': 'text-wrapper'}) is None:
             continue
@@ -51,10 +56,11 @@ def scrapwsj1(url):
     return result
 
 
-def scrapwsj2(url):
+def scrapwsj2(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
+              'images': [], 'article': [], 'cleaned_article': []}
 
     top_section = soup.find('div', {'class': 'cb-row'})
 
@@ -64,6 +70,10 @@ def scrapwsj2(url):
     articles.append(list(big)[0])
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
 
         a = article.find('a', {'class': 'wsj-headline-link'})
         result['titles'].append(a.text)
@@ -90,10 +100,11 @@ def scrapwsj2(url):
     return result
 
 
-def scrapwsj3(url):
+def scrapwsj3(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [],
+              'teasers': [], 'images': [], 'article': [], 'cleaned_article': []}
 
     top_section = soup.find('div', {'class': 'buckets-bottom noImage-border-wrapper'})
 
@@ -105,6 +116,11 @@ def scrapwsj3(url):
     articles = articles[0:5]
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         if article.find('div', {'class': 'text-wrapper'}) is None:
             continue
@@ -136,10 +152,11 @@ def scrapwsj3(url):
     return result
 
 
-def scrapwsj4(url):
+def scrapwsj4(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
+              'images': [], 'article': [], 'cleaned_article': []}
 
     top_section = soup.find('div', {'class': 'cb-row'})
 
@@ -149,6 +166,11 @@ def scrapwsj4(url):
     #articles.append(list(big)[0])
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         a = article.find('a', {'class': 'wsj-headline-link'})
         result['titles'].append(a.text)
@@ -188,14 +210,18 @@ def scrapwsj4(url):
     return result
 
 
-def scrapft(url):
+def scrapft(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': [], 'articles': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
+              'images': [], 'article': [], 'cleaned_article': []}
 
     articles = soup.find_all('li', {'class': 'o-teaser-collection__item o-grid-row'})
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
 
         if (article.find('img') is None) | (article.find('p', {'class': 'o-teaser__standfirst'}) is None):
             continue
@@ -228,15 +254,21 @@ def scrapft(url):
     return result
 
 
-def scrapnyt1(url):
+def scrapnyt1(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
+              'images': [], 'article': [], 'cleaned_article': []}
 
     down_section = soup.find('ol', {'class': 'story-menu theme-stream initial-set'})
     articles = down_section.find_all('li')
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         image = article.find('img')
         if image is not None:
@@ -255,15 +287,21 @@ def scrapnyt1(url):
     return result
 
 
-def scrapnyt2(url):
+def scrapnyt2(journal, section, url):
 
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
+              'images': [], 'article': [], 'cleaned_article': []}
 
     col = soup.find('div', {'class': 'columnGroup last'})
     articles = col.find_all('div', {'class': 'story'})
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         h3 = article.find('h3')
         title = h3.find('a').text.strip()
@@ -284,9 +322,10 @@ def scrapnyt2(url):
     return result
 
 
-def scraple(url):
+def scraple(journal, section, url):
     soup = get_raw_data(url)
-    result = {'titles': [], 'hrefs': [], 'teasers': [], 'images': []}
+    result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
+              'images': [], 'article': [], 'cleaned_article': []}
 
     col = soup.find('div', {'class': 'article-secondaire'})
     articles = col.find_all('article', {'class': 'article-small article-medium'})
@@ -310,6 +349,11 @@ def scraple(url):
         result['images'].append('void')
 
     for article in articles:
+
+        result['journal'].append(journal)
+        result['section'].append(section)
+        result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         titre = article.find('div', {'class': 'titre'})
         title = titre.find('a').text.strip()

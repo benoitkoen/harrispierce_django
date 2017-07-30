@@ -9,28 +9,28 @@ def scrap(journal, section, url):
     res = None
 
     if (journal == 'Wall Street Journal') & (section in ['World', 'Companies', 'Opinion']):
-        res = pd.DataFrame(scrapwsj1(url))
+        res = pd.DataFrame(scrapwsj1(journal, section, url))
 
     elif (journal == 'Wall Street Journal') & (section in ['Tech']):
-        res = pd.DataFrame(scrapwsj2(url))
+        res = pd.DataFrame(scrapwsj2(journal, section, url))
 
     elif (journal == 'Wall Street Journal') & (section in ['Economy']):
-        res = pd.DataFrame(scrapwsj3(url))
+        res = pd.DataFrame(scrapwsj3(journal, section, url))
 
     elif (journal == 'Wall Street Journal') & (section in ['Politics']):
-        res = pd.DataFrame(scrapwsj4(url))
+        res = pd.DataFrame(scrapwsj4(journal, section, url))
 
     elif journal == 'Financial Times':
-        res = pd.DataFrame(scrapft(url))
+        res = pd.DataFrame(scrapft(journal, section, url))
 
     elif (journal == 'New York Times') & (section in ['Tech', 'World', 'Economy', 'Energy', 'Politics']):
-        res = pd.DataFrame(scrapnyt1(url))
+        res = pd.DataFrame(scrapnyt1(journal, section, url))
 
     elif (journal == 'New York Times') & (section in ['Dealbook']):
-        res = pd.DataFrame(scrapnyt2(url))
+        res = pd.DataFrame(scrapnyt2(journal, section, url))
 
     elif journal == 'Les Echos':
-        res = pd.DataFrame(scraple(url))
+        res = pd.DataFrame(scraple(journal, section, url))
 
     return res
 

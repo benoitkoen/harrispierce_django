@@ -1,2 +1,3 @@
 def clean_article(article_content):
-    pass
+
+    return article_content
