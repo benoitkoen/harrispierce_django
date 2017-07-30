@@ -1,7 +1,9 @@
-import urllib2
-from bs4 import BeautifulSoup
+#import urllib2
+#from bs4 import BeautifulSoup
 import requests
 from lxml import html
+
+from harrispierce.processing.clean_articles import clean_article
 
 
 payload = {
@@ -37,7 +39,14 @@ result = session_requests.get(
 tree = html.fromstring(result.content)
 bucket_names = tree.xpath("//div[@class='article__body n-content-body']/p/text()")
 
-print(bucket_names)
+article = []
+
+for line in bucket_names:
+    article.append(line.encode('ascii', 'ignore'))
+
+print(article)
+
+print(clean_article(article))
 
 """
 soup = BeautifulSoup(urllib2.urlopen(url), 'lxml')
