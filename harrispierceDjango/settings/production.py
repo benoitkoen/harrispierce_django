@@ -29,7 +29,7 @@ SECRET_KEY = 'pmxp=o^^wyfmv1%+8ews_wrh&q=!p3&3mc-7s#m4rkm=+3=@yw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.harrispierce.com']
+ALLOWED_HOSTS = ['harrispierce.herokuapp.com', 'harrispierce.com']
 
 
 # Application definition
