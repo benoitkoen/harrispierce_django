@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 
 from harrispierce.forms import LoginForm, NewUserForm, SearchForm
 
-from .models import Article, Journal, Section, User
+from .models import Article, Journal, Section
 
 
 class IndexView(generic.ListView):   # ListView
@@ -46,7 +46,6 @@ class DisplayView(generic.DayArchiveView):
 
 class LoginView(generic.FormView):
 
-    model = User
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
     success_url = reverse_lazy('index')
@@ -56,7 +55,6 @@ class LoginView(generic.FormView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            #user = form.save(commit=False)
             user_name = form.cleaned_data['user_name']
             password = form.cleaned_data['password']
 
@@ -68,18 +66,16 @@ class LoginView(generic.FormView):
                 if user.is_active:
                     # user signified to system as logged in
                     login(request, user)
-                    return redirect('index_perso')#index_perso
+                    return redirect('index_perso')
 
         return render(request, self.template_name, {'form': form})
 
 
-#@method_decorator(login_required, name='dispatch')
 class IndexPersoView(generic.ListView):
     model = Article
     template_name = 'harrispierce/login/index_perso.html'
 
 
-#@login_required(login_url='login')
 class DisplayPersoView(generic.DetailView):
     model = Article
     template_name = 'harrispierce/login/display_perso.html'
@@ -105,7 +101,6 @@ class MustBeLoggedInView(generic.ListView):
 
 class NewUserView(generic.FormView):
 
-    model = User
     form_class = NewUserForm
     template_name = 'harrispierce/new_user/new_user.html'
     success_url = reverse_lazy('new_user_thanks')
@@ -145,7 +140,3 @@ class NewUserThanksView(generic.ListView):
 
     model = Article
     template_name = 'harrispierce/new_user/new_user_thanks.html'
-
-    def get_queryset(self):
-        return Article.objects.order_by('-pub_date')[:5]
-

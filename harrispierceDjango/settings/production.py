@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'harrispierceDjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',  #'django.db.backends.sqlite3',
-        'NAME': 'articles',  #os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'harrispiercedb',  #os.path.join(BASE_DIR, 'db.sqlite3'),
         'USER': 'postgres',
-        'PASSWORD': 'benoit16',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': ''
     }
