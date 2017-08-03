@@ -27,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'pmxp=o^^wyfmv1%+8ews_wrh&q=!p3&3mc-7s#m4rkm=+3=@yw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['harrispierce.herokuapp.com', 'harrispierce.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -55,8 +55,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'harrispierceDjango.urls'
-DEFAULT_REDIRECT_URL = 'http://www.harrispierce.com'
-PARENT_HOST = 'harrispierce.com'
 
 TEMPLATES = [
     {
@@ -90,11 +88,6 @@ DATABASES = {
         'PORT': ''
     }
 }
-
-# Update database configuration with $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
 
 
 # Password validation
