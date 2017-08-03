@@ -82,7 +82,7 @@ class DisplayPersoView(generic.DetailView):
 
 
 class SearchFormView(generic.FormView):
-    model = Article
+    #model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/search_form.html'
     success_url = reverse_lazy('display_search')
