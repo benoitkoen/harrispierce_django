@@ -5,19 +5,18 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.views import generic
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 
 from harrispierce.forms import LoginForm, NewUserForm, SearchForm
-
-from .models import Article, Journal, Section
+from harrispierce.models import Article, Journal, Section
 
 
 class IndexView(generic.ListView):   # ListView
     template_name = 'harrispierce/index.html'
 
-    def get_queryset(self):
-        return Journal.objects.all()
+    def get(self, request):
+        journals = Journal.objects.prefetch_related('sections').all()
+        args = {'journals': journals}
+        return render(request, self.template_name, args)#Journal.objects.all()
 
     context_object_name = 'latest_question_list'
 
@@ -25,6 +24,14 @@ class IndexView(generic.ListView):   # ListView
 class DisplayView(generic.ListView):
     model = Article
     template_name = 'harrispierce/display.html'
+
+    def get(self, request):
+        if request.method == "POST":
+            selection = request.POST.get("selection", None)
+            journal, section = selection.split('-')
+            if selection in ["locationbox", "displaybox"]:
+                # Handle whichever was selected here
+                # But, this is not the best way to do it.  See below...
 
     def get_queryset(self):
         return Article.objects.order_by('-pub_date')[:5]
@@ -76,7 +83,7 @@ class IndexPersoView(generic.ListView):
     template_name = 'harrispierce/login/index_perso.html'
 
 
-class DisplayPersoView(generic.DetailView):
+class DisplayPersoView(generic.ListView):
     model = Article
     template_name = 'harrispierce/login/display_perso.html'
 

@@ -4,6 +4,7 @@
     <div>Search</div>
 
     <form action="" method="post">{% csrf_token %} {{ form.as_p }}
-    <input type="submit" value="Search" onclick="window.location.href='login/display_search.html'"/>
+        <input type="submit" value="Search" onclick="'{% url 'display_search' %}'"/>
     </form>
+    <button id = "cancel" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
 {% endblock %}

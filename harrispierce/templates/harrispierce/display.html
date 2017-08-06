@@ -5,8 +5,10 @@
 
     <h1>{{ day }}</h1>
     <ul>
-    {% for article in object_list %}
-    <li>{{ article.pub_date|date:"F j, Y" }}: {{ article.title }}</li> {% endfor %}
+        {% for article in object_list %}
+            <li>{{ article.pub_date|date:"F j, Y" }}: {{ article.title }}</li>
+        {% endfor %}
+
 {% endblock %}
 
 {%block contentblock %}

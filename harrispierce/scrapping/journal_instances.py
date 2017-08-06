@@ -1,4 +1,4 @@
-from scrap_urls import WSJUrls, FTUrls, NYTUrls, lesEchosUrls, journals
+from harrispierce.scrapping.scrap_urls import journals
 
 journal_list = []
 

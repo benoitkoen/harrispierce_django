@@ -14,7 +14,7 @@ urlpatterns = [
 
     # ex: /polls/5/results/
     url(r'^login/index_perso.html/$', views.IndexPersoView.as_view(), name='index_perso'),
-    url(r'^login/display_perso.html/$', views.DisplayPersoView, name='display_perso'),
+    url(r'^login/display_perso.html/$', views.DisplayPersoView.as_view(), name='display_perso'),
     # ex: /polls/5/vote/
     url(r'^login/search_form.html/$', views.SearchFormView.as_view(), name='search_form'),
     url(r'^login/display_search.html/$', views.DisplaySearchView.as_view(), name='display_search'),

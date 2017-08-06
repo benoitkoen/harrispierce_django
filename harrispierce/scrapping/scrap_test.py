@@ -1,6 +1,7 @@
 import requests
 from lxml import html
 
+"""
 from harrispierce.processing.clean_articles import clean_article
 
 
@@ -45,7 +46,7 @@ for line in bucket_names:
 print(article)
 
 print(clean_article(article))
-
+"""
 """
 soup = BeautifulSoup(urllib2.urlopen(url), 'lxml')
 

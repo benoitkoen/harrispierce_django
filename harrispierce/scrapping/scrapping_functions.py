@@ -1,13 +1,13 @@
-import urllib2
+from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from time import sleep
 
-from scrap_articles import scrap_ft_article
-from harrispierce.processing.clean_articles import clean_article
+from harrispierce.scrapping.scrap_articles import scrap_ft_article
+#from harrispierce.processing.clean_articles import clean_article
 
 
 def get_raw_data(url):
-    page = urllib2.urlopen(url)
+    page = urlopen(url)
     soup = BeautifulSoup(page, 'lxml')
     return soup
 
@@ -32,6 +32,7 @@ def scrapwsj1(journal, section, url):
         result['journal'].append(journal)
         result['section'].append(section)
         result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         if article.find('div', {'class': 'text-wrapper'}) is None:
             continue
@@ -67,13 +68,17 @@ def scrapwsj2(journal, section, url):
     articles = top_section.find_all('h3', {'class': 'wsj-headline dj-sg wsj-card-feature heading-3 locked'})
     big = top_section.find_all('h3', {'class': 'wsj-headline dj-sg wsj-card-feature heading-1 locked'})
 
-    articles.append(list(big)[0])
+    try:
+        articles.append(list(big)[0])
+    except IndexError:
+        pass
 
     for article in articles:
 
         result['journal'].append(journal)
         result['section'].append(section)
         result['article'].append('void')
+        result['cleaned_article'].append('void')
 
         a = article.find('a', {'class': 'wsj-headline-link'})
         result['titles'].append(a.text)
@@ -132,8 +137,6 @@ def scrapwsj3(journal, section, url):
             if a is None:
                 a = article.find('a', {'class': 'headline'})
 
-            #print(article, a)
-
             result['titles'].append(a.text)
             result['hrefs'].append(a.get('href'))
 
@@ -163,7 +166,7 @@ def scrapwsj4(journal, section, url):
     articles = top_section.find_all('h3', {'class': 'wsj-headline dj-sg wsj-card-feature heading-3 locked'})
     big = top_section.find_all('h3', {'class': 'wsj-headline dj-sg wsj-card-feature heading-1 locked'})
 
-    #articles.append(list(big)[0])
+    articles.append(list(big)[0])
 
     for article in articles:
 
@@ -176,11 +179,8 @@ def scrapwsj4(journal, section, url):
         result['titles'].append(a.text)
         result['hrefs'].append(a.get('href'))
 
-        #print(article)
-
         image_div = article.find_next_sibling('div', {'class': 'right wsj-card-feature wsj-card-media Image'})
 
-        #image = image_div.find('meta')
         if image_div is not None:
             image = image_div.find('img', {'class': 'wsj-img-content'})
 
@@ -188,7 +188,6 @@ def scrapwsj4(journal, section, url):
             teaser = div.find('p', {'class': 'wsj-summary dj-sg wsj-card-feature'}).find('span').text
             result['teasers'].append(teaser)
 
-            #result['images'].append(image.get('content'))
             result['images'].append(image.get('src'))
         else:
             div = article.find_next_sibling('p', {'class': 'wsj-summary dj-sg wsj-card-feature'}) # SIBLINGS oF H3 pour image et teaser
@@ -199,13 +198,7 @@ def scrapwsj4(journal, section, url):
             teaser = div.find('span').text
             result['teasers'].append(teaser)
 
-            #print(article.parent.findChildren())
-                  #find('div', {'class': 'right wsj-card-feature wsj-card-media Image'}))
-            #image =
             result['images'].append('void')
-
-            #image = image_div.find('img', {'class': 'wsj-img-content'})
-            #result['images'].append(image.get('src'))
 
     return result
 
@@ -222,6 +215,8 @@ def scrapft(journal, section, url):
 
         result['journal'].append(journal)
         result['section'].append(section)
+
+        result['cleaned_article'].append('void')
 
         if (article.find('img') is None) | (article.find('p', {'class': 'o-teaser__standfirst'}) is None):
             continue
@@ -245,11 +240,11 @@ def scrapft(journal, section, url):
         'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
 
     for href in result['hrefs']:
-        result['articles'].append(scrap_ft_article(login_url, href))
+        result['article'].append(scrap_ft_article(login_url, href))
         sleep(15)
 
-    for article in result['articles']:
-        result['cleaned_content'].append(clean_article(article))
+    #for article in result['article']:
+    #    result['cleaned_content'].append(clean_article(article))
 
     return result
 
