@@ -2,7 +2,7 @@
 
 {%block blockname %}
     <div>INDEX</div><br>
-    <form action="" method="post">
+    <form action="display.html/" method="get">{% csrf_token %}
         {% for journal in journals %}
             <h1 class="journal">{{ journal.name }}</h1>
             {% for section in journal.sections.all %}
@@ -11,8 +11,7 @@
                     <label>{{ section.name }}</label>
             {% endfor %}
         {% endfor %}
+        <br>
         <input type="submit" value="Let's Go!" onclick="window.location.href='{% url 'display' %}'">
     </form>
-
-    <!--<button id = "display" onclick="window.location.href='{% url 'display' %}'">Lets Go</button><br>-->
 {% endblock %}

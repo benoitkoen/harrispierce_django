@@ -1,18 +1,17 @@
 {% extends 'harrispierce/base_loggedin.html' %}
 
-{%block blockname %}
-    <div>DISPLAY PERSO</div>
-    <h1>{{ day }}</h1>
-    <ul>
-    {% for article in object_list %}
-    <li>{{ article.pub_date|date:"F j, Y" }}: {{ article.title }}</li> {% endfor %}
-{% endblock %}
-
 {%block contentblock %}
-    <h1>Articles</h1>
     <ul>
-    {% for article in object_list %}
-    <li>{{ article.pub_date|date }} - {{ article.headline }}</li> {% empty %}
-    <li>No articles yet.</li> {% endfor %}
+    {% for journal, sections in selection_dict.items %}
+        <h1>{{ journal }}</h1>
+        {% for section in sections %}
+            <h2>{{ section }}</h2>
+            {% for article in articles %}
+                <li>{{ article.pub_date|date }} - {{ article.title }}</li>
+                {% empty %}
+                <li>No articles yet.</li>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
     </ul>
 {% endblock %}
