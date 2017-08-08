@@ -49,6 +49,18 @@ journalPrimaryKeys = {
 }
 
 """
+WSJ: W, E, D, P
+article1 = Article(title='title1, teaser='teaser1', href='href1', image='image1', article='article1', cleaned_article='cleaned_article1', journal_id=8, section_id=36)
+article2 = Article(title='title2, teaser='teaser2', href='href2', image='image2', article='article2', cleaned_article='cleaned_article2', journal_id=8, section_id=37)
+article3 = Article(title='title3, teaser='teaser3', href='href3', image='image3', article='article3', cleaned_article='cleaned_article3', journal_id=8, section_id=38)
+article1 = Article(title='title1, teaser='teaser1', href='href1', image='image1', article='article1', cleaned_article='cleaned_article1', journal_id=8, section_id=39)
+
+NYT: T, O, W, E
+article5 = Article(title='title5, teaser='teaser5', href='href5', image='image5', article='article5', cleaned_article='cleaned_article5', journal_id=9, section_id=40)
+article6 = Article(title='title6, teaser='teaser6', href='href6', image='image6', article='article6', cleaned_article='cleaned_article6', journal_id=9, section_id=41)
+article7 = Article(title='title7, teaser='teaser7', href='href7', image='image7', article='article7', cleaned_article='cleaned_article7', journal_id=9, section_id=42)
+article1 = Article(title='title1, teaser='teaser1', href='href1', image='image1', article='article1', cleaned_article='cleaned_article1', journal_id=9, section_id=43)
+
 j1 = Journal(name = 'Wall Street Journal', country = 'US')
 j1.save()
 s1 = j1.sections.create(name = 'World')

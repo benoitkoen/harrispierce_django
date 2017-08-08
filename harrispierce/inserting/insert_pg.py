@@ -1,26 +1,42 @@
-#from harrispierce.scrapping.scrap import scrap
-#from harrispierce.models import Article
+#!/usr/bin/python
 
-from sqlalchemy import create_engine
+import psycopg2
 
-engine = create_engine('postgresql://postgres@localhost:5432/harrispiercedb')
-df.to_sql('harrispierce_article', engine, if_exists="replace")
+hostname = ''
+username = 'postgres'
+password = ''
+database = 'postgres'
 
-"""
-def insert_into_pg(journal, section, url):
 
-    df = scrap(journal, section, url)
-    df_records = df.to_dict('records')
+# https://www.a2hosting.com/kb/developer-corner/postgresql/connecting-to-postgresql-using-python
+def insert_article_local(conn, journal, section, size):
+    cur = conn.cursor()
+    cur.execute(
+        "prepare insertion as "
+        
+        "INSERT INTO harrispierce_article(title, teaser, href, image, article, cleaned_article, journal_id, section_id)"
+        "VALUES ($1, $2, $3, $4, $5, $6, SELECT id FROM harrispierce_journal WHERE name = $7, "
+        "SELECT id FROM harrispierce_section WHERE name = $8"
+    )
 
-    model_instances = [Article(
-        field_1=record['field_1'],
-        field_2=record['field_2'],
-    ) for record in df_records]
+    for i in range(size):
+        cur.execute("execute insertion (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    ('title'+str(i),
+                     'teaser'+str(i),
+                     'href'+str(i),
+                     'image'+str(i),
+                     'article'+str(i),
+                     'cleaned_article'+str(i),
+                     journal,
+                     section
+                     ))
 
-    Article.objects.bulk_create(model_instances)
-"""
+myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
+insert_article_local(myConnection, 'Wall Street Journal', 'Economy', 5)
+myConnection.close()
 
-t = insert_into_pg('Wall Street Journal', 'Politics', 'https://www.wsj.com/news/politics')
+
+#t = insert_into_pg('Wall Street Journal', 'Politics', 'https://www.wsj.com/news/politics')
 
 
 #t = scrap('Financial Times', 'World', 'https://www.ft.com/world')

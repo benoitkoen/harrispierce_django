@@ -18,8 +18,6 @@ class IndexView(generic.ListView):   # ListView
         args = {'journals': journals}
         return render(request, self.template_name, args)
 
-    context_object_name = 'latest_question_list'
-
 
 class DisplayView(generic.ListView):
     template_name = 'harrispierce/display.html'
@@ -90,13 +88,36 @@ class LoginView(generic.FormView):
 
 
 class IndexPersoView(LoginRequiredMixin, generic.ListView):
-    model = Article
     template_name = 'harrispierce/login/index_perso.html'
+
+    def get(self, request, **kwargs):
+        journals = Journal.objects.prefetch_related('sections').all()
+        args = {'journals': journals}
+        return render(request, self.template_name, args)
 
 
 class DisplayPersoView(generic.ListView):
-    model = Article
     template_name = 'harrispierce/login/display_perso.html'
+
+    def get(self, request, **kwargs):
+        if request.method == "GET":
+            selection = request.GET.getlist("selection")
+            selection_dict = {}
+
+            for journal_section in selection:
+                journal, section = journal_section.split('-')
+
+                if journal not in selection_dict.keys():
+                    selection_dict[journal] = []
+                    selection_dict[journal].append(section)
+                else:
+                    if section not in selection_dict[journal]:
+                        selection_dict[journal].append(section)
+
+            articles = Article.objects.all()
+
+            args = {'articles': articles, 'selection_dict': selection_dict}
+            return render(request, self.template_name, args)
 
 
 class SearchFormView(generic.FormView):
