@@ -1,6 +1,14 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from harrispierce.scrapping.scrap_urls import journals
+
+
+DISPLAY_CHOICES = (
+    ("locationbox", "Display Location"),
+    ("displaybox", "Display Direction")
+)
+
 
 class LoginForm(forms.Form):
     user_name = forms.CharField(label='Username', required=True)

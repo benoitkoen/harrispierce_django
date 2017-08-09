@@ -1,30 +1,46 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import get_object_or_404, render, loader, redirect
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.views import generic
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 
 from harrispierce.forms import LoginForm, NewUserForm, SearchForm
-
-from .models import Article, Journal, Section
+from harrispierce.models import Article, Journal, Section
 
 
 class IndexView(generic.ListView):   # ListView
     template_name = 'harrispierce/index.html'
 
-    def get_queryset(self):
-        return Journal.objects.all()
-
-    context_object_name = 'latest_question_list'
+    def get(self, request, **kwargs):
+        journals = Journal.objects.prefetch_related('sections').all()
+        args = {'journals': journals}
+        return render(request, self.template_name, args)
 
 
 class DisplayView(generic.ListView):
-    model = Article
     template_name = 'harrispierce/display.html'
+
+    def get(self, request, **kwargs):
+        if request.method == "GET":
+            selection = request.GET.getlist("selection")
+            selection_dict = {}
+
+            for journal_section in selection:
+                journal, section = journal_section.split('-')
+
+                if journal not in selection_dict.keys():
+                    selection_dict[journal] = []
+                    selection_dict[journal].append(section)
+                else:
+                    if section not in selection_dict[journal]:
+                        selection_dict[journal].append(section)
+
+            articles = Article.objects.all()
+
+            args = {'articles': articles, 'selection_dict': selection_dict}
+            return render(request, self.template_name, args)
 
     def get_queryset(self):
         return Article.objects.order_by('-pub_date')[:5]
@@ -71,14 +87,37 @@ class LoginView(generic.FormView):
         return render(request, self.template_name, {'form': form})
 
 
-class IndexPersoView(generic.ListView):
-    model = Article
+class IndexPersoView(LoginRequiredMixin, generic.ListView):
     template_name = 'harrispierce/login/index_perso.html'
 
+    def get(self, request, **kwargs):
+        journals = Journal.objects.prefetch_related('sections').all()
+        args = {'journals': journals}
+        return render(request, self.template_name, args)
 
-class DisplayPersoView(generic.DetailView):
-    model = Article
+
+class DisplayPersoView(generic.ListView):
     template_name = 'harrispierce/login/display_perso.html'
+
+    def get(self, request, **kwargs):
+        if request.method == "GET":
+            selection = request.GET.getlist("selection")
+            selection_dict = {}
+
+            for journal_section in selection:
+                journal, section = journal_section.split('-')
+
+                if journal not in selection_dict.keys():
+                    selection_dict[journal] = []
+                    selection_dict[journal].append(section)
+                else:
+                    if section not in selection_dict[journal]:
+                        selection_dict[journal].append(section)
+
+            articles = Article.objects.all()
+
+            args = {'articles': articles, 'selection_dict': selection_dict}
+            return render(request, self.template_name, args)
 
 
 class SearchFormView(generic.FormView):

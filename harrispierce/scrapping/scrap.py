@@ -1,4 +1,4 @@
-from scrapping_functions import scrapwsj1, scrapwsj2, scrapwsj3, scrapwsj4, scrapft, scrapnyt1, scrapnyt2, scraple
+from harrispierce.scrapping.scrapping_functions import scrapwsj1, scrapwsj2, scrapwsj3, scrapwsj4, scrapft, scrapnyt1, scrapnyt2, scraple
 
 import pandas as pd
 pd.set_option('display.width', 320)
@@ -36,16 +36,17 @@ def scrap(journal, section, url):
 
 
 #print('yo')
-t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
+#print('vvkbjldfjklfjklnfvjklnf')
+#t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
 
 #t = scrap('New York Times', 'Dealbook', 'http://www.nytimes.com/pages/business/dealbook/index.html?src=busfn')
-#t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
+t = scrap('Wall Street Journal', 'Politics', 'https://www.wsj.com/news/politics')
 #t = scrap('Wall Street Journal', 'Economy', 'https://www.wsj.com/news/economy')
 #t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
 
 print('vfavfvf\n', t)
-print('vfavfvf\n', t.iloc[0]['articles'])
-print('vfavfvf\n', t.iloc[1]['articles'])
+#print('vfavfvf\n', t.iloc[0]['articles'])
+#print('vfavfvf\n', t.iloc[1]['articles'])
 #print('url: ', t.iloc[1]['hrefs'])
 
 

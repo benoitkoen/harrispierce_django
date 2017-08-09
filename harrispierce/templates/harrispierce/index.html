@@ -2,5 +2,16 @@
 
 {%block blockname %}
     <div>INDEX</div><br>
-    <button id = "display" onclick="window.location.href='{% url 'display' %}'">Lets Go</button><br>
+    <form action="display.html/" method="get">{% csrf_token %}
+        {% for journal in journals %}
+            <h1 class="journal">{{ journal.name }}</h1>
+            {% for section in journal.sections.all %}
+                <!--<h2 class="journal">{{section.name}}</h2>-->
+                <input type="checkbox" class="section" name="selection" value="{{journal.name}}-{{section.name}}">
+                    <label>{{ section.name }}</label>
+            {% endfor %}
+        {% endfor %}
+        <br>
+        <input type="submit" value="Let's Go!">
+    </form>
 {% endblock %}

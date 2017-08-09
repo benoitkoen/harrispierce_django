@@ -1,5 +1,17 @@
-{% extends 'harrispierce/base.html' %}
+{% extends 'harrispierce/base_loggedin.html' %}
 
-{%block blockname %}
-    <div>DISPLAY PERSO</div>
+{%block contentblock %}
+    <ul>
+    {% for journal, sections in selection_dict.items %}
+        <h1>{{ journal }}</h1>
+        {% for section in sections %}
+            <h2>{{ section }}</h2>
+            {% for article in articles %}
+                <li>{{ article.pub_date|date }} - {{ article.title }}</li>
+                {% empty %}
+                <li>No articles yet.</li>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    </ul>
 {% endblock %}

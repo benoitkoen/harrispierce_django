@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'harrispierceDjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'harrispiercedb',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': '',
         'HOST': '',
