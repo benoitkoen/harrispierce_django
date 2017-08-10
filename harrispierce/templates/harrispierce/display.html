@@ -7,7 +7,7 @@
         <h1>{{ journal }}</h1>
         {% for section in sections %}
             <h2>{{ section }}</h2>
-            {% for article in articles %}
+            {% for article in section.articles %}
                 <li>{{ article.pub_date|date }} - {{ article.title }}</li>
                 {% empty %}
                 <li>No articles yet.</li>

@@ -30,6 +30,8 @@ class DisplayView(generic.ListView):
             for journal_section in selection:
                 journal, section = journal_section.split('-')
 
+                # FAIRE UN DICO de articles!
+
                 if journal not in selection_dict.keys():
                     selection_dict[journal] = []
                     selection_dict[journal].append(section)
