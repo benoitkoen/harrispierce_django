@@ -29,17 +29,19 @@ class DisplayView(generic.ListView):
 
             for journal_section in selection:
                 journal, section = journal_section.split('-')
+                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
+
+                print(journal, section)
 
                 if journal not in selection_dict.keys():
-                    selection_dict[journal] = []
-                    selection_dict[journal].append(section)
+                    article_selection = {}
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
                 else:
-                    if section not in selection_dict[journal]:
-                        selection_dict[journal].append(section)
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
 
-            articles = Article.objects.all()
-
-            args = {'articles': articles, 'selection_dict': selection_dict}
+            args = {'selection_dict': selection_dict}
             return render(request, self.template_name, args)
 
     def get_queryset(self):
@@ -106,31 +108,56 @@ class DisplayPersoView(generic.ListView):
 
             for journal_section in selection:
                 journal, section = journal_section.split('-')
+                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
+
+                print(journal, section)
 
                 if journal not in selection_dict.keys():
-                    selection_dict[journal] = []
-                    selection_dict[journal].append(section)
+                    article_selection = {}
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
                 else:
-                    if section not in selection_dict[journal]:
-                        selection_dict[journal].append(section)
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
 
-            articles = Article.objects.all()
-
-            args = {'articles': articles, 'selection_dict': selection_dict}
+            args = {'selection_dict': selection_dict}
             return render(request, self.template_name, args)
 
 
 class SearchFormView(generic.FormView):
-    #model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/search_form.html'
     success_url = reverse_lazy('display_search')
 
 
 class DisplaySearchView(generic.ListView):
-    model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/display_search.html'
+
+    def get(self, request, **kwargs):
+        if request.method == 'GET':
+            form = SearchForm(request.GET)
+            if form.is_valid():
+                keyword = form['Keyword'].value()
+
+                print(keyword)
+            else:
+                print('skjalkvjfnljkfdnljkdfvnfd')
+            """
+            keyword = form['Keyword'].value()
+            sources = form['Sources'].value()
+            date = form['Date'].value()
+            quantity = form['Quantity'].value()
+
+            print(keyword, sources, date, quantity)
+
+            articles = Article.objects.filter(teaser__contains=keyword,
+                                              pub_date__gte=date,
+                                              journal_id__name__in=sources).order_by('pub_date')[:quantity]
+            """
+            args = {'articles': 'articles'}
+
+            return render(request, self.template_name, args)
 
 
 class MustBeLoggedInView(generic.ListView):

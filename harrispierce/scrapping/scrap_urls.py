@@ -50,7 +50,7 @@ journalPrimaryKeys = {
 
 """
 WSJ: W, E, D, P
-article1 = Article(title='title1, teaser='teaser1', href='href1', image='image1', article='article1', cleaned_article='cleaned_article1', journal_id=8, section_id=36)
+article1 = Article(title='title1', teaser='teaser1', href='href1', image='image1', article='article1', cleaned_article='cleaned_article1', journal_id=8, section_id=36)
 article2 = Article(title='title2, teaser='teaser2', href='href2', image='image2', article='article2', cleaned_article='cleaned_article2', journal_id=8, section_id=37)
 article3 = Article(title='title3, teaser='teaser3', href='href3', image='image3', article='article3', cleaned_article='cleaned_article3', journal_id=8, section_id=38)
 article1 = Article(title='title1, teaser='teaser1', href='href1', image='image1', article='article1', cleaned_article='cleaned_article1', journal_id=8, section_id=39)
