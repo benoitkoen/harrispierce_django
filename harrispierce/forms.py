@@ -1,13 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from harrispierce.scrapping.scrap_urls import journals
 
-
-DISPLAY_CHOICES = (
-    ("locationbox", "Display Location"),
-    ("displaybox", "Display Direction")
-)
+from harrispierce.models import Article, Journal, Section
 
 
 class LoginForm(forms.Form):
@@ -40,6 +35,9 @@ class NewUserForm(forms.ModelForm):
 class SearchForm(forms.Form):
 
     Keyword = forms.CharField(widget=forms.TextInput)
-    Sources = forms.CharField(widget=forms.Textarea)
+    Sources = forms.ModelMultipleChoiceField(
+        queryset=Journal.objects.all().values_list('name', flat=True),
+        widget=forms.CheckboxSelectMultiple
+    )
     Date = forms.CharField(widget=forms.SelectDateWidget)
     Quantity = forms.CharField(widget=forms.NumberInput)

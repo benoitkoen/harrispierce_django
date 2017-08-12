@@ -1,10 +1,13 @@
-{% extends 'harrispierce/base.html' %}
+{% extends 'harrispierce/base_loggedin.html' %}
 
 {%block blockname %}
-    <div>DISPLAY SEARCH</div>
-    <!--
     <ul>
-    {% for article in latest %}
-    <li>{{ article.pub_date }}: {{ article.title }}</li> {% endfor %}
-    </ul>-->
+    {% for journal, articles in selection_dict.items %}
+        <h1>{{ journal }}</h1>
+        {% for article in articles %}
+            <li>{{ article.pub_date }}: {{ article.title }}</li> {% endfor %}
+                {% empty %}
+                <li>No articles yet.</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
