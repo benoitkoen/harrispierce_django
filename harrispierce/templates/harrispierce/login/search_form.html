@@ -3,8 +3,8 @@
 {%block blockname %}
     <div>Search</div>
 
-    <form action="" method="post">{% csrf_token %} {{ form.as_p }}
-        <input type="submit" value="Search" onclick="'{% url 'display_search' %}'"/>
+    <form action="/login/display_search.html/" method="GET">{% csrf_token %} {{ form.as_p }}
+        <input type="submit" value="Search"/>
     </form>
     <button id = "cancel" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
 {% endblock %}

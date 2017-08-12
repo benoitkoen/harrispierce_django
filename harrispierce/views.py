@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.views import generic
+from django.db.models import Q
 
 from harrispierce.forms import LoginForm, NewUserForm, SearchForm
 from harrispierce.models import Article, Journal, Section
@@ -29,17 +30,19 @@ class DisplayView(generic.ListView):
 
             for journal_section in selection:
                 journal, section = journal_section.split('-')
+                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
+
+                print(journal, section)
 
                 if journal not in selection_dict.keys():
-                    selection_dict[journal] = []
-                    selection_dict[journal].append(section)
+                    article_selection = {}
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
                 else:
-                    if section not in selection_dict[journal]:
-                        selection_dict[journal].append(section)
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
 
-            articles = Article.objects.all()
-
-            args = {'articles': articles, 'selection_dict': selection_dict}
+            args = {'selection_dict': selection_dict}
             return render(request, self.template_name, args)
 
     def get_queryset(self):
@@ -102,35 +105,60 @@ class DisplayPersoView(generic.ListView):
     def get(self, request, **kwargs):
         if request.method == "GET":
             selection = request.GET.getlist("selection")
+            if len(selection) == 0:
+                return redirect('index_perso')
+
             selection_dict = {}
 
             for journal_section in selection:
                 journal, section = journal_section.split('-')
+                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
 
                 if journal not in selection_dict.keys():
-                    selection_dict[journal] = []
-                    selection_dict[journal].append(section)
+                    article_selection = {}
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
                 else:
-                    if section not in selection_dict[journal]:
-                        selection_dict[journal].append(section)
+                    article_selection[section] = articles
+                    selection_dict[journal] = article_selection
 
-            articles = Article.objects.all()
-
-            args = {'articles': articles, 'selection_dict': selection_dict}
+            args = {'selection_dict': selection_dict}
             return render(request, self.template_name, args)
 
 
 class SearchFormView(generic.FormView):
-    #model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/search_form.html'
     success_url = reverse_lazy('display_search')
 
 
 class DisplaySearchView(generic.ListView):
-    model = Article
     form_class = SearchForm
     template_name = 'harrispierce/login/display_search.html'
+
+    def get(self, request, **kwargs):
+        if request.method == 'GET':
+            form = SearchForm(request.GET)
+
+            keyword = form['Keyword'].value()
+            sources = form['Sources'].value()
+            date = form['Date'].value()
+            quantity = form['Quantity'].value()
+
+            selection_dict = {}
+
+            for journal in sources:
+
+                articles = Article.objects.filter(
+                    (Q(teaser__contains=keyword) | Q(title__contains=keyword)),
+                    pub_date__gte=date,
+                    journal_id__name=journal,
+                ).order_by('pub_date')[:quantity]
+
+                selection_dict[journal] = articles
+
+            args = {'selection_dict': selection_dict}
+            return render(request, self.template_name, args)
 
 
 class MustBeLoggedInView(generic.ListView):

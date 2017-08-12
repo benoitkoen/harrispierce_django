@@ -3,11 +3,11 @@
 
 {%block contentblock %}
     <ul>
-    {% for journal, sections in selection_dict.items %}
+    {% for journal, article_selection in selection_dict.items %}
         <h1>{{ journal }}</h1>
-        {% for section in sections %}
+        {% for section, article_list in article_selection.items %}
             <h2>{{ section }}</h2>
-            {% for article in articles %}
+            {% for article in article_list %}
                 <li>{{ article.pub_date|date }} - {{ article.title }}</li>
                 {% empty %}
                 <li>No articles yet.</li>
@@ -15,4 +15,5 @@
         {% endfor %}
     {% endfor %}
     </ul>
+<button id = "cancel" onclick="window.location.href='{% url 'index' %}'">Go back to Index</button><br>
 {% endblock %}
