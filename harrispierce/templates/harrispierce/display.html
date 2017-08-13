@@ -8,9 +8,13 @@
         {% for section, article_list in article_selection.items %}
             <h2>{{ section }}</h2>
             {% for article in article_list %}
-                <li>{{ article.pub_date|date }} - {{ article.title }}</li>
-                {% empty %}
-                <li>No articles yet.</li>
+                <h3 class = 'title'><a href = '{{ article.href }}'>{{ article.title }}</a></h3>
+                <p>{{ article.teaser }}</p>
+                {% if journal == 'Financial Times' %}
+                    <img srcset = '{{ article.image }}'>
+                {% else %}
+                    <img src = '{{ article.image }}'>
+                {% endif %}
             {% endfor %}
         {% endfor %}
     {% endfor %}

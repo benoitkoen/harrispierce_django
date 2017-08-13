@@ -40,10 +40,11 @@ def scrap(journal, section, url):
 #t = scrap('New York Times', 'Tech', 'https://www.nytimes.com/section/technology')
 #t = scrap('New York Times', 'Economy', 'http://www.nytimes.com/pages/business/economy/index.html?src=busfn')
 #t = scrap('New York Times', 'Dealbook', 'http://www.nytimes.com/pages/business/dealbook/index.html?src=busfn')
-#t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
+t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
 
-t = scrap('Les Echos', 'World', 'http://www.lesechos.fr/monde/index.php')
+#t = scrap('Les Echos', 'World', 'http://www.lesechos.fr/monde/index.php')
 print('vfavfvf\n', t)
+print(t['image'].iloc[2])
 
 
 
