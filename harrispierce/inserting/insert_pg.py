@@ -1,52 +1,45 @@
 #!/usr/bin/python
 
 import psycopg2
+from datetime import datetime
 
 hostname = ''
 username = 'postgres'
 password = ''
 database = 'postgres'
 
-
+"""
 # https://www.a2hosting.com/kb/developer-corner/postgresql/connecting-to-postgresql-using-python
 def insert_article_local(conn, journal, section, size):
+    conn.autocommit = True
     cur = conn.cursor()
     cur.execute(
         "prepare insertion as "
         
-        "INSERT INTO harrispierce_article(title, teaser, href, image, article, cleaned_article, journal_id, section_id)"
-        "VALUES ($1, $2, $3, $4, $5, $6, SELECT id FROM harrispierce_journal WHERE name = $7, "
-        "SELECT id FROM harrispierce_section WHERE name = $8"
+        "INSERT INTO harrispierce_article(title, teaser, href, image, article, cleaned_article, pub_date, journal_id, section_id)"
+        "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
     )
 
     for i in range(size):
-        cur.execute("execute insertion (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    ('title'+str(i),
-                     'teaser'+str(i),
-                     'href'+str(i),
-                     'image'+str(i),
-                     'article'+str(i),
-                     'cleaned_article'+str(i),
-                     journal,
-                     section
+        cur.execute('SELECT id FROM harrispierce_journal WHERE name = {}{}{}'.format("'", journal, "'"))
+        journal_id = cur.fetchone()[0]
+        cur.execute('SELECT id FROM harrispierce_section WHERE name = {}{}{}'.format("'", section, "'"))
+        section_id = cur.fetchone()[0]
+
+        cur.execute("execute insertion (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    ('titlePSY'+str(i),
+                     'teaserPSY'+str(i),
+                     'hrefPSY'+str(i),
+                     'imagePSY'+str(i),
+                     'articlePSY'+str(i),
+                     'cleaned_articlePSY'+str(i),
+                     datetime.utcnow(),
+                     journal_id,
+                     section_id
                      ))
 
 myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
-insert_article_local(myConnection, 'Wall Street Journal', 'Economy', 5)
+#insert_article_local(myConnection, 1, 1, 1)
+insert_article_local(myConnection, 'Wall Street Journal', 'World', 3)
 myConnection.close()
-
-
-#t = insert_into_pg('Wall Street Journal', 'Politics', 'https://www.wsj.com/news/politics')
-
-
-#t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
-
-#t = scrap('New York Times', 'Dealbook', 'http://www.nytimes.com/pages/business/dealbook/index.html?src=busfn')
-#t = scrap('Wall Street Journal', 'Politics', 'https://www.wsj.com/news/politics')
-#t = scrap('Wall Street Journal', 'Economy', 'https://www.wsj.com/news/economy')
-#t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
-
-print('vfavfvf')
-#print('vfavfvf\n', t.iloc[0]['articles'])
-#print('vfavfvf\n', t.iloc[1]['articles'])
-#print('url: ', t.iloc[1]['hrefs'])
+"""

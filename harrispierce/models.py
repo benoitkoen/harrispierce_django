@@ -30,8 +30,6 @@ class Journal(models.Model):
 class Article(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    #journal = models.CharField(max_length=300, null=False)
-    #section = models.CharField(max_length=300, null=False)
     title = models.CharField(max_length=300, null=False)
     teaser = models.TextField(default='void')
     href = models.CharField(max_length=300, null=False)

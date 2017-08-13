@@ -1,13 +1,15 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from time import sleep
+import ssl
 
 from harrispierce.scrapping.scrap_articles import scrap_ft_article
 #from harrispierce.processing.clean_articles import clean_article
 
+context = ssl._create_unverified_context()
 
 def get_raw_data(url):
-    page = urlopen(url)
+    page = urlopen(url, context=context)
     soup = BeautifulSoup(page, 'lxml')
     return soup
 
@@ -29,14 +31,14 @@ def scrapwsj1(journal, section, url):
 
     for article in articles:
 
-        result['journal'].append(journal)
-        result['section'].append(section)
-        result['article'].append('void')
-        result['cleaned_article'].append('void')
-
         if article.find('div', {'class': 'text-wrapper'}) is None:
             continue
         else:
+            result['journal'].append(journal)
+            result['section'].append(section)
+            result['article'].append('void')
+            result['cleaned_article'].append('void')
+
             a = article.find('a', {'class': 'subPrev headline'})
 
             result['titles'].append(a.text)
@@ -116,7 +118,7 @@ def scrapwsj3(journal, section, url):
     articles = top_section.find_all('article', {'class': 'hed-summ'})
     big = top_section.find_all('article', {'class': 'lead-headline hed-summ'})
 
-    articles.append(list(big)[0])
+    articles.append(list(big))
 
     articles = articles[0:5]
 
@@ -213,14 +215,15 @@ def scrapft(journal, section, url):
 
     for article in articles:
 
-        result['journal'].append(journal)
-        result['section'].append(section)
-
-        result['cleaned_article'].append('void')
-
         if (article.find('img') is None) | (article.find('p', {'class': 'o-teaser__standfirst'}) is None):
             continue
         else:
+            result['journal'].append(journal)
+            result['section'].append(section)
+
+            result['cleaned_article'].append('void')
+            result['article'].append('void')
+
             a = article.find('a', {'class': 'js-teaser-heading-link'})
             title = a.text.strip()
 
@@ -236,12 +239,12 @@ def scrapft(journal, section, url):
             else:
                 result['images'].append('void')
 
-    login_url = \
-        'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
+    #login_url = \
+    #    'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
 
-    for href in result['hrefs']:
-        result['article'].append(scrap_ft_article(login_url, href))
-        sleep(15)
+    #for href in result['hrefs']:
+    #    result['article'].append(scrap_ft_article(login_url, href))
+    #    sleep(15)
 
     #for article in result['article']:
     #    result['cleaned_content'].append(clean_article(article))
@@ -255,18 +258,19 @@ def scrapnyt1(journal, section, url):
     result = {'journal': [], 'section': [], 'titles': [], 'hrefs': [], 'teasers': [],
               'images': [], 'article': [], 'cleaned_article': []}
 
-    down_section = soup.find('ol', {'class': 'story-menu theme-stream initial-set'})
+    #down_section = soup.find('ol', {'class': 'story-menu theme-stream initial-set'})
+    down_section = soup.find('div', {'class': 'stream'}).find('ol')
     articles = down_section.find_all('li')
 
     for article in articles:
 
-        result['journal'].append(journal)
-        result['section'].append(section)
-        result['article'].append('void')
-        result['cleaned_article'].append('void')
-
         image = article.find('img')
         if image is not None:
+            result['journal'].append(journal)
+            result['section'].append(section)
+            result['article'].append('void')
+            result['cleaned_article'].append('void')
+
             result['images'].append(image.get('src'))
             
             a = article.find('a', {'class': 'story-link'})
@@ -333,6 +337,11 @@ def scraple(journal, section, url):
 
     result['titles'].append(title)
     result['hrefs'].append(href)
+
+    result['journal'].append(journal)
+    result['section'].append(section)
+    result['article'].append('void')
+    result['cleaned_article'].append('void')
 
     p = big.find('p', {'class': 'chapo'})
     result['teasers'].append(p.text.strip())

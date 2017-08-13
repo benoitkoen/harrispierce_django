@@ -1,5 +1,12 @@
 import requests
 from lxml import html
+from harrispierce.scrapping.scrap_urls import journals
+from harrispierce.scrapping.scrap import scrap
+
+for journal, urls in journals.items():
+    for section, url in urls.items():
+        print(journal, section, url)
+        print(scrap(journal, section, url))
 
 """
 from harrispierce.processing.clean_articles import clean_article
@@ -62,14 +69,9 @@ def get_raw_data(url):
 
 print(get_raw_data(t.iloc[1]['hrefs']))
 
-
-for i in journal_list:
-
-    for section, url in (i.urls).items():
-        print(i.name, section, url)
-
-        print(scrap(i.name, section, url))
 """
+
+
 
 
         

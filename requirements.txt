@@ -17,7 +17,9 @@ pytz==2017.2
 requests==2.18.2
 six==1.10.0
 urllib3==1.22
-
-
+pytest==3.2.1
+pytest-django==3.1.2
+factory-boy==2.9.2
+Faker==0.7.18
 
 
