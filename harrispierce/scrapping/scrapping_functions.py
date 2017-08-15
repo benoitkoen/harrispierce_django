@@ -16,6 +16,13 @@ def get_raw_data(url):
     return soup
 
 
+def clean_result(dict):
+    for key, val in dict.items():
+        for index, item in enumerate(val):
+            if item is None:
+                val[index] = 'void'
+
+
 def scrapwsj1(journal, section, url):
 
     soup = get_raw_data(url)
@@ -56,6 +63,8 @@ def scrapwsj1(journal, section, url):
                 result['image'].append(image.get('data-src'))
             else:
                 result['image'].append('void')
+
+    clean_result(result)
 
     return result
 
@@ -103,6 +112,8 @@ def scrapwsj2(journal, section, url):
             result['teaser'].append(teaser)
         else:
             result['teaser'].append('no preview')
+
+    clean_result(result)
 
     return result
 
@@ -153,6 +164,8 @@ def scrapwsj3(journal, section, url):
             else:
                 result['image'].append('void')
 
+    clean_result(result)
+
     return result
 
 
@@ -200,6 +213,8 @@ def scrapwsj4(journal, section, url):
 
             result['image'].append('void')
 
+    clean_result(result)
+
     return result
 
 
@@ -246,6 +261,8 @@ def scrapft(journal, section, url):
     #for article in result['article']:
     #    result['cleaned_content'].append(clean_article(article))
 
+    clean_result(result)
+
     return result
 
 
@@ -278,6 +295,8 @@ def scrapnyt1(journal, section, url):
 
                 p = article.find('p', {'class': 'summary'})
                 result['teaser'].append(p.text)
+
+    clean_result(result)
 
     return result
 
@@ -312,6 +331,8 @@ def scrapnyt2(journal, section, url):
             result['image'].append(image.get('src'))
         else:
             result['image'].append('void')
+
+    clean_result(result)
 
     return result
 
@@ -369,23 +390,6 @@ def scraple(journal, section, url):
         else:
             result['image'].append('void')
 
+    clean_result(result)
+
     return result
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

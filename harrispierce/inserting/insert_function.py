@@ -1,16 +1,20 @@
 #!/usr/bin/python
 from datetime import datetime
-
+import psycopg2
 
 def insert_article(conn, df):
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute(
-        "prepare insertion as "
 
-        "INSERT INTO harrispierce_article(title, teaser, href, image, article, cleaned_article, pub_date, journal_id, section_id)"
-        "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
-    )
+    try:
+        cur.execute(
+            "prepare insertion as "
+    
+            "INSERT INTO harrispierce_article(title, teaser, href, image, article, cleaned_article, pub_date, journal_id, section_id)"
+            "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
+        )
+    except psycopg2.ProgrammingError:
+        pass
 
     for i in range(len(df)):
         article = df.ix[i, 'article']
@@ -38,4 +42,3 @@ def insert_article(conn, df):
                      journal_id,
                      section_id
                      ))
-

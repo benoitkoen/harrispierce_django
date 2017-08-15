@@ -33,18 +33,3 @@ def scrap(journal, section, url):
         res = pd.DataFrame(scraple(journal, section, url))
 
     return res
-
-
-
-#t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
-#t = scrap('New York Times', 'Tech', 'https://www.nytimes.com/section/technology')
-#t = scrap('New York Times', 'Economy', 'http://www.nytimes.com/pages/business/economy/index.html?src=busfn')
-#t = scrap('New York Times', 'Dealbook', 'http://www.nytimes.com/pages/business/dealbook/index.html?src=busfn')
-t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
-
-#t = scrap('Les Echos', 'World', 'http://www.lesechos.fr/monde/index.php')
-print('vfavfvf\n', t)
-print(t['image'].iloc[2])
-
-
-
