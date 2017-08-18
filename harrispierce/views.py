@@ -7,8 +7,8 @@ from django.contrib.auth import authenticate, login
 from django.views import generic
 from django.db.models import Q
 
-from harrispierce.forms import LoginForm, NewUserForm, SearchForm
-from harrispierce.models import Article, Journal, Section
+from .forms import LoginForm, NewUserForm, SearchForm
+from .models import Article, Journal, Section
 
 
 class IndexView(generic.ListView):   # ListView

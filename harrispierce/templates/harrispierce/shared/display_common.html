@@ -1,0 +1,19 @@
+<ul>
+    {% for journal, article_selection in selection_dict.items %}
+        <h1>{{ journal }}</h1>
+        {% for section, article_list in article_selection.items %}
+            <h2>{{ section }}</h2>
+            {% for article in article_list %}
+                <p>{{ article.pub_date }}</p>
+                <h3 class = 'title'><a href = '{{ article.href }}'>{{ article.title }}</a></h3>
+                <p>{{ article.teaser }}</p>
+                {% if journal == 'Financial Times' %}
+                    <img srcset = '{{ article.image }}'>
+                {% else %}
+                    <img src = '{{ article.image }}'>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    </ul>
+<button id = "cancel" onclick="window.location.href='{% url 'index' %}'">Go back to Index</button><br>
