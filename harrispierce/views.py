@@ -26,11 +26,14 @@ class DisplayView(generic.ListView):
     def get(self, request, **kwargs):
         if request.method == "GET":
             selection = request.GET.getlist("selection")
+            if len(selection) == 0:
+                return redirect('index')
+
             selection_dict = {}
 
             for journal_section in selection:
                 journal, section = journal_section.split('-')
-                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
+                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section).order_by('-pub_date')[:7]
 
                 print(journal, section)
 
@@ -47,20 +50,6 @@ class DisplayView(generic.ListView):
 
     def get_queryset(self):
         return Article.objects.order_by('-pub_date')[:5]
-
-
-"""
-class DisplayView(generic.DayArchiveView):
-    model = Article
-    template_name = 'harrispierce/display_search.html'
-
-    queryset = Article.objects.all()
-    date_field = "pub_date"
-    allow_future = True
-
-    def get_queryset(self):
-        return Article.objects.order_by('-pub_date')[:5]
-"""
 
 
 class LoginView(generic.FormView):

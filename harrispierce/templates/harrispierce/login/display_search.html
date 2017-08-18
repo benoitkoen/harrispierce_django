@@ -5,9 +5,12 @@
     {% for journal, articles in selection_dict.items %}
         <h1>{{ journal }}</h1>
         {% for article in articles %}
-            <li>{{ article.pub_date }}: {{ article.title }}</li> {% endfor %}
+            <li>{{ article.pub_date }}: {{ article.title }}</li>
                 {% empty %}
-                <li>No articles yet.</li>
+                <li>No articles related to that keyword.</li>
         {% endfor %}
+    {% endfor %}
     </ul>
+<button id = "go_back" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
+<button id = "login" onclick="window.location.href='{% url 'search_form' %}'">Go back to Search</button><br>
 {% endblock %}

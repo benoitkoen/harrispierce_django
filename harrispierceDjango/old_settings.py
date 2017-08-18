@@ -1,6 +1,7 @@
 """
 http://127.0.0.1:8000/admin/auth/user/
 cd desktop/divers/WEB/django/harrispierce_django
+cd desktop/projet_web/harrispierce_django/
 python manage.py runserver
 
 Django settings for harrispierceDjango project.
