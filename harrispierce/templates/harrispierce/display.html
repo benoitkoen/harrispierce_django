@@ -8,6 +8,7 @@
         {% for section, article_list in article_selection.items %}
             <h2>{{ section }}</h2>
             {% for article in article_list %}
+                <p>{{ article.pub_date }}</p>
                 <h3 class = 'title'><a href = '{{ article.href }}'>{{ article.title }}</a></h3>
                 <p>{{ article.teaser }}</p>
                 {% if journal == 'Financial Times' %}

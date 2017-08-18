@@ -33,7 +33,7 @@ class DisplayView(generic.ListView):
 
             for journal_section in selection:
                 journal, section = journal_section.split('-')
-                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
+                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section).order_by('-pub_date')[:7]
 
                 print(journal, section)
 

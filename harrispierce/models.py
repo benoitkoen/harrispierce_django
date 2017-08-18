@@ -30,10 +30,10 @@ class Journal(models.Model):
 class Article(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    title = models.CharField(max_length=300, null=False)
-    teaser = models.TextField(default='void')
+    title = models.CharField(max_length=300, null=False, unique=True)
+    teaser = models.TextField(default='void', unique=True)
     href = models.CharField(max_length=300, null=False)
-    image = models.TextField(default='void')
+    image = models.TextField(default='void', unique=True)
     article = models.TextField(default='void')
     cleaned_article = models.TextField(default='void')
     pub_date = models.DateTimeField('date published', auto_now_add=True)
