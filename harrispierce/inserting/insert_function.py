@@ -8,13 +8,6 @@ def insert_article(conn, df):
     conn.autocommit = True
     cur = conn.cursor()
 
-    """
-    try:
-        cur.execute("deallocate insertion")
-    except django.db.utils.OperationalError:
-        print('error operation')
-        pass
-    """
     cur.execute("deallocate all")
 
     try:
@@ -32,8 +25,6 @@ def insert_article(conn, df):
         pass
 
     for i in range(len(df)):
-        #p
-        print('inserrrrrrrrt')
         article = df.ix[i, 'article']
         cleaned_article = df.ix[i, 'cleaned_article']
         href = df.ix[i, 'href']
@@ -59,3 +50,4 @@ def insert_article(conn, df):
                      journal_id,
                      section_id
                      ))
+        print('Inserted.')

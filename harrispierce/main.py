@@ -15,25 +15,25 @@ database = DATABASES['default']['NAME']  # 'postgres'
 myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
 
 if __name__ == '__main__':
-    """
+
     for journal, urls in journals.items():
         for section, url in urls.items():
             print('inserting for: ', '\n', journal, '\n', section, '\n', url)
             
             insert_article(myConnection, scrap(journal, section, url))
+
     """
     #retrieve_data(myConnection, 'journal')
     #retrieve_data(myConnection, 'section')
     retrieve_data(myConnection, 'article')
-
     """
     # t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
     # t = scrap('New York Times', 'Tech', 'https://www.nytimes.com/section/technology')
     # t = scrap('New York Times', 'Economy', 'http://www.nytimes.com/pages/business/economy/index.html?src=busfn')
     # t = scrap('New York Times', 'Dealbook', 'http://www.nytimes.com/pages/business/dealbook/index.html?src=busfn')
     # t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
-
-    # t = scrap('Les Echos', 'World', 'http://www.lesechos.fr/monde/index.php')
-    # print('vfavfvf\n', t)
+    """
+    t = scrap('Wall Street Journal', 'World', 'https://www.wsj.com/news/world')
+    print('vfavfvf\n', t)
     # print(t['image'].iloc[2])
     """

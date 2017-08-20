@@ -34,8 +34,12 @@ def scrapwsj1(journal, section, url):
 
     big = top_section.find('article', {'class': 'hed-summ no-image lead-headline'})
 
-    articles.append(list(big)[0])
-    articles = articles[:-1]
+    try:
+        articles.append(list(big)[0])
+        articles = articles[:-1]
+
+    except TypeError:
+        pass
 
     for article in articles:
 
@@ -251,12 +255,15 @@ def scrapft(journal, section, url):
             else:
                 result['image'].append('void')
 
-    #login_url = \
-    #    'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
+    login_url = \
+        'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
 
-    #for href in result['href']:
-    #    result['article'].append(scrap_ft_article(login_url, href))
-    #    sleep(15)
+    for href in result['href']:
+        print(login_url, '\n', href)
+        article = scrap_ft_article(login_url, href)
+        result['article'].append(article)
+        print(article[:200])
+        sleep(60)
 
     #for article in result['article']:
     #    result['cleaned_content'].append(clean_article(article))

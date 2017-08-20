@@ -1,62 +1,63 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django import forms
 from django.shortcuts import get_object_or_404, render, loader, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.views import generic
 from django.db.models import Q
 
 from .forms import LoginForm, NewUserForm, SearchForm
 from .models import Article, Journal, Section
+from .views_functions import index_get, display_get
 
 
-class IndexView(generic.ListView):   # ListView
-    template_name = 'harrispierce/index.html'
+class NewUserView(generic.FormView):
 
-    def get(self, request, **kwargs):
-        journals = Journal.objects.prefetch_related('sections').all()
-        args = {'journals': journals}
-        return render(request, self.template_name, args)
+    form_class = NewUserForm
+    template_name = 'harrispierce/new_user/new_user.html'
+    success_url = reverse_lazy('index_perso')
 
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
 
-class DisplayView(generic.ListView):
-    template_name = 'harrispierce/display.html'
+    def post(self, request):
+        form = self.form_class(request.POST)
 
-    def get(self, request, **kwargs):
-        if request.method == "GET":
-            selection = request.GET.getlist("selection")
-            if len(selection) == 0:
-                return redirect('index')
+        if form.is_valid():
 
-            selection_dict = {}
+            # create an object from the form but does not save it the db yet
+            user = form.save(commit=False)
 
-            for journal_section in selection:
-                journal, section = journal_section.split('-')
-                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section).order_by('-pub_date')[:7]
+            #email =
+            user_name = form.cleaned_data['user_name']
+            password = form.cleaned_data['password']
 
-                print(journal, section)
+            user.username = user_name
+            user.email = request.POST['email']
+            user.set_password(password)
+            user.save()
 
-                if journal not in selection_dict.keys():
-                    article_selection = {}
-                    article_selection[section] = articles
-                    selection_dict[journal] = article_selection
-                else:
-                    article_selection[section] = articles
-                    selection_dict[journal] = article_selection
+            # user exists or not
+            user = authenticate(username=user_name, password=password)
+            if user is not None:
 
-            args = {'selection_dict': selection_dict}
-            return render(request, self.template_name, args)
+                if user.is_active:
+                    # user signified to system as logged in
+                    login(request, user)
 
-    def get_queryset(self):
-        return Article.objects.order_by('-pub_date')[:5]
+                    return redirect('index_perso')
+
+        return render(request, self.template_name, {'form': form})
 
 
 class LoginView(generic.FormView):
 
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
-    #success_url = reverse_lazy('index')
 
     def post(self, request):
 
@@ -75,16 +76,40 @@ class LoginView(generic.FormView):
                     # user signified to system as logged in
                     login(request, user)
                     return redirect('index_perso')
-        #form = self.form_class()
+
         return render(request, self.template_name, {'form': form})
+
+
+class IndexView(generic.ListView):   # ListView
+    template_name = 'harrispierce/index.html'
+
+    def get(self, request, **kwargs):
+        journals, args = index_get()
+        return render(request, self.template_name, args)
+
+
+class DisplayView(generic.ListView):
+    template_name = 'harrispierce/display.html'
+
+    def get(self, request, **kwargs):
+        if request.method == "GET":
+            selection = request.GET.getlist("selection")
+            if len(selection) == 0:
+                return redirect('index')
+
+            args = display_get(selection)
+
+            return render(request, self.template_name, args)
+
+    def get_queryset(self):
+        return Article.objects.order_by('-pub_date')[:5]
 
 
 class IndexPersoView(LoginRequiredMixin, generic.ListView):
     template_name = 'harrispierce/login/index_perso.html'
 
     def get(self, request, **kwargs):
-        journals = Journal.objects.prefetch_related('sections').all()
-        args = {'journals': journals}
+        journals, args = index_get()
         return render(request, self.template_name, args)
 
 
@@ -95,23 +120,10 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
         if request.method == "GET":
             selection = request.GET.getlist("selection")
             if len(selection) == 0:
-                return redirect('index_perso')
+                return redirect('index')
 
-            selection_dict = {}
+            args = display_get(selection)
 
-            for journal_section in selection:
-                journal, section = journal_section.split('-')
-                articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
-
-                if journal not in selection_dict.keys():
-                    article_selection = {}
-                    article_selection[section] = articles
-                    selection_dict[journal] = article_selection
-                else:
-                    article_selection[section] = articles
-                    selection_dict[journal] = article_selection
-
-            args = {'selection_dict': selection_dict}
             return render(request, self.template_name, args)
 
 
@@ -154,45 +166,3 @@ class MustBeLoggedInView(generic.ListView):
     model = Article
     template_name = 'harrispierce/must_be_loggedin.html'
 
-
-class NewUserView(generic.FormView):
-
-    form_class = NewUserForm
-    template_name = 'harrispierce/new_user/new_user.html'
-    success_url = reverse_lazy('new_user_thanks')
-
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-
-        if form.is_valid():
-            user = form.save(commit=False)
-
-            user_name = form.cleaned_data['user_name']
-            password = form.cleaned_data['password']
-
-            user.username = user_name
-            user.email = request.POST['email']
-            user.set_password(password)
-            user.save()
-
-            # user exists or not
-            user = authenticate(username=user_name, password=password)
-
-            if user is not None:
-
-                if user.is_active:
-                    # user signified to system as logged in
-                    login(request, user)
-                    return redirect('new_user_thanks')
-
-        return render(request, self.template_name, {'form': form})
-
-
-class NewUserThanksView(generic.ListView):
-
-    model = Article
-    template_name = 'harrispierce/new_user/new_user_thanks.html'
