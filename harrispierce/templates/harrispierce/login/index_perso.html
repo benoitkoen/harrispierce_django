@@ -1,17 +1,8 @@
-{% extends 'harrispierce/base_loggedin.html' %}
+{% extends 'harrispierce/shared/base_loggedin.html' %}
 
 {%block blockname %}
     <div>INDEX PERSO</div><br>
     <form action="/login/display_perso.html/" method="get">{% csrf_token %}
-        {% for journal in journals %}
-            <h1 class="journal">{{ journal.name }}</h1>
-            {% for section in journal.sections.all %}
-                <!--<h2 class="journal">{{section.name}}</h2>-->
-                <input type="checkbox" class="section" name="selection" value="{{journal.name}}-{{section.name}}">
-                    <label>{{ section.name }}</label>
-            {% endfor %}
-        {% endfor %}
-        <br>
-        <input type="submit" value="Let's Go!">
+        {% include 'harrispierce/shared/index_common.html' %}
     </form>
 {% endblock %}

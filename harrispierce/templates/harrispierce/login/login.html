@@ -1,8 +1,8 @@
-{% extends 'harrispierce/base.html' %}
+{% extends 'harrispierce/shared/base.html' %}
 
 {%block blockname %}
 
-{% if form.error %}
+{% if form.errors %}
     <p class="error"> Sorry, invalid username or password.</p>
 {% endif %}
 
