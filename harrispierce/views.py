@@ -56,7 +56,7 @@ class LoginView(generic.FormView):
 
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
-    success_url = reverse_lazy('index')
+    #success_url = reverse_lazy('index')
 
     def post(self, request):
 
@@ -75,7 +75,7 @@ class LoginView(generic.FormView):
                     # user signified to system as logged in
                     login(request, user)
                     return redirect('index_perso')
-
+        #form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
 
@@ -88,7 +88,7 @@ class IndexPersoView(LoginRequiredMixin, generic.ListView):
         return render(request, self.template_name, args)
 
 
-class DisplayPersoView(generic.ListView):
+class DisplayPersoView(LoginRequiredMixin, generic.ListView):
     template_name = 'harrispierce/login/display_perso.html'
 
     def get(self, request, **kwargs):
