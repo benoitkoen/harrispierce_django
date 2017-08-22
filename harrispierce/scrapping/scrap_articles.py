@@ -2,42 +2,52 @@ import requests
 from lxml import html
 
 
-def scrap_ft_article(login_url, article_url):
-    payload = {
-        "email": "benoit.koenig@hec.edu",
-        "password": "attention"
-    }
+class FTScrapingMachine:
 
-    session_requests = requests.session()
+    def __init__(self,
+                 email="benoit.koenig@hec.edu",
+                 password="attention",
+                 login_url='https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
+                 ):
 
-    result = session_requests.get(login_url)
+        self.payload = {
+            "email": email,
+            "password": password
+        }
+        self.login_url = login_url
+        self.logged_in = False
+        self.session_requests = None
 
-    tree = html.fromstring(result.text)
+    def scrap_ft_article(self, article_url):
 
-    result = session_requests.post(
-        login_url,
-        data=payload,
-        headers=dict(referer=login_url)
-    )
+        # if not logged in yet
+        if self.logged_in is False:
+            self.session_requests = requests.session()
 
-    result = session_requests.get(
-        article_url,
-        headers=dict(referer=article_url)
-    )
+            result = self.session_requests.get(self.login_url)
+            tree = html.fromstring(result.text)
+            result = self.session_requests.post(
+                self.login_url,
+                data=self.payload,
+                headers=dict(referer=self.login_url)
+            )
+            self.logged_in = True
 
-    tree = html.fromstring(result.content)
+        # Scrapping
+        result = self.session_requests.get(
+            article_url,
+            headers=dict(referer=article_url)
+        )
 
-    paragraphes = tree.xpath("//div[@class='article__body n-content-body']/p/text()")
+        tree = html.fromstring(result.content)
 
-    article = ''
+        paragraphes = tree.xpath("//div[@class='article__body n-content-body']/p/text()")
 
-    for p in paragraphes:
-        article += p
+        article = ''
 
-    return article
+        for p in paragraphes:
+            article += p
 
-art = scrap_ft_article(
-    'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
-    'https://www.ft.com/content/87d644fc-73a4-11e7-aca6-c6bd07df1a3c')
-
-print(art)
+        if len(article) == 0:
+            return 'void'
+        return article
