@@ -24,54 +24,26 @@ if __name__ == '__main__':
     all_scrappers['Les Echos'] = None
 
     """
-    for journal, urls in journals.items():
+    for journal, urls in sorted(journals.items()):
         for section, url in urls.items():
-            print('inserting for: ', '\n', journal, '\n', section, '\n', url)
-            
-            insert_article(myConnection, scrap(scrapper=all_scrappers[journal],
-                                               journal=journal,
-                                               section=section,
-                                               url=url))
+            print('inserting for: ', '\n', journal, '\n', section, '\n', url, '\n', all_scrappers[journal])
+            insert_article(myConnection, scrap(scrapper=all_scrappers[journal], journal=journal, section=section, url=url))
+
     """
     """
     #retrieve_data(myConnection, 'journal')
     #retrieve_data(myConnection, 'section')
     retrieve_data(myConnection, 'article')
     """
-    """
-    # t = scrap('Financial Times', 'World', 'https://www.ft.com/world')
-    # t = scrap('New York Times', 'Tech', 'https://www.nytimes.com/section/technology')
-    # t = scrap('New York Times', 'Economy', 'http://www.nytimes.com/pages/business/economy/index.html?src=busfn')
-    # t = scrap('New York Times', 'Dealbook', 'http://www.nytimes.com/pages/business/dealbook/index.html?src=busfn')
-    # t = scrap('Wall Street Journal', 'Tech', 'https://www.wsj.com/news/technology')
-
-    # t = scrap('Les Echos', 'World', 'http://www.lesechos.fr/monde/index.php')
-    # print('vfavfvf\n', t)
-    # print(t['image'].iloc[2])
-    """
 
     """
-    l = [
-    'https://www.ft.com/content/440dee7e-8654-11e7-bf50-e1c239b45787',
-    'https://www.ft.com/content/b878361a-8673-11e7-8bb1-5ba57d47eff7',
-    'https://www.ft.com/content/febf249e-866e-11e7-bf50-e1c239b45787',
-    'https://www.ft.com/video/db0c4143-ba2e-4910-856a-0fd4e08a5093',
-    'https://www.ft.com/content/979346ea-866b-11e7-bf50-e1c239b45787',
-    'https://www.ft.com/content/a3b01274-865b-11e7-bf50-e1c239b45787',
-    'https://www.ft.com/content/ec8757be-8633-11e7-bf50-e1c239b45787'
-    ]
+    for journal, urls in journals.items():
+        if journal in ['Wall Street Journal', 'Financial Times']:
+            for section, url in urls.items():
+                print('inserting for: ', '\n', journal, '\n', section, '\n', url, '\n', all_scrappers[journal])
+                df = scrap(scrapper=all_scrappers[journal], journal=journal, section=section, url=url)
+                print(df, '\n the len: ', len(df))
     """
-    from time import sleep
-    scrapper = FTScrapingMachine()
-    t = scrap(scrapper, 'Financial Times', 'World', 'https://www.ft.com/world')
+    scrapper = all_scrappers['Financial Times']
+    t = scrap(scrapper, 'Financial Times', 'Companies', 'http://ft.com/companies')
     print('vfavfvf\n', t)
-
-    """
-    #for arti in l:
-    #    art = scrapper.scrap_ft_article(arti)
-    #    if art is not None:
-    #        print(art[:50])
-    #    else:
-    #        print(art)
-    #    sleep(10)
-    """

@@ -8,7 +8,7 @@ class FTScrapingMachine:
                  email="benoit.koenig@hec.edu",
                  password="attention",
                  login_url='https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
-                 ):
+                 ):         #https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2Fd5119962-868f-11e7-8bb1-5ba57d47eff7
 
         self.payload = {
             "email": email,
@@ -20,6 +20,7 @@ class FTScrapingMachine:
 
     def scrap_ft_article(self, article_url):
 
+        print('loggedin already? ', self.logged_in, '\n', article_url)
         # if not logged in yet
         if self.logged_in is False:
             self.session_requests = requests.session()
@@ -31,6 +32,9 @@ class FTScrapingMachine:
                 data=self.payload,
                 headers=dict(referer=self.login_url)
             )
+            print('login successful: ', "My Account" in result.text)
+            print('login failed: ', "Sign in" in result.text)
+
             self.logged_in = True
 
         # Scrapping

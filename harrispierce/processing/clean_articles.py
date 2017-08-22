@@ -1,4 +1,4 @@
-
+"""
 import nltk
 import ssl
 
@@ -65,3 +65,4 @@ def remove_stop_words(no_bad_tokens_article):
         tokenized_article_no_stopwords.append(new_term_vector)
 
     return tokenized_article_no_stopwords
+"""
