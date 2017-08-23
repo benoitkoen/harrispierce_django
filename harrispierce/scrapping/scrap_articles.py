@@ -36,8 +36,13 @@ def scrap_ft_article(login_url, article_url):
 
     return article
 
-art = scrap_ft_article(
-    'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
-    'https://www.ft.com/content/87d644fc-73a4-11e7-aca6-c6bd07df1a3c')
+
+#art = scrap_ft_article(
+#    'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
+#    'https://www.ft.com/content/87d644fc-73a4-11e7-aca6-c6bd07df1a3c')
+
+art = scrap_ft_article('https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
+                       'https://www.ft.com/content/a48c4aec-859c-11e7-8bb1-5ba57d47eff7')
 
 print(art)
+

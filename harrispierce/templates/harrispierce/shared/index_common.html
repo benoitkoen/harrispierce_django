@@ -2,7 +2,6 @@
 {% for journal in journals %}
     <h1 class="journal">{{ journal.name }}</h1>
     {% for section in journal.sections.all %}
-        <!--<h2 class="journal">{{section.name}}</h2>-->
         <input type="checkbox" class="section" name="selection" value="{{journal.name}}-{{section.name}}">
             <label>{{ section.name }}</label>
     {% endfor %}
