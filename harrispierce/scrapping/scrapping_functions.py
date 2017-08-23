@@ -230,9 +230,8 @@ def scrapft(scrapper, journal, section, url):
 
         if (article.find('img') is None) | (article.find('p', {'class': 'o-teaser__standfirst'}) is None):
             continue
+
         else:
-            if ScrappingConfig.scrap_article_boolean is False:
-                result['article'].append('void')
 
             result['journal'].append(journal)
             result['section'].append(section)
@@ -240,10 +239,12 @@ def scrapft(scrapper, journal, section, url):
             result['cleaned_article'].append('void')
 
             a = article.find('a', {'class': 'js-teaser-heading-link'})
-            title = a.text.strip()
 
+            title = a.text.strip()
             result['title'].append(title)
-            result['href'].append('https://www.ft.com'+a.get('href'))
+
+            href = 'https://www.ft.com'+a.get('href')
+            result['href'].append(href)
 
             p = article.find('p', {'class': 'o-teaser__standfirst'})
             result['teaser'].append(p.text)
@@ -254,17 +255,21 @@ def scrapft(scrapper, journal, section, url):
             else:
                 result['image'].append('void')
 
-    if ScrappingConfig.scrap_article_boolean is True:
-        # Article scrapping requiring login
-        for href in result['href']:
-            article = scrapper.scrap_ft_article(href)
-            result['article'].append(article)
-            print('scraped: ', article[:50])
-            sleep(ScrappingConfig.sleep_time)
+            if ScrappingConfig.scrap_article_boolean is True:
+                # Article scrapping requiring login
+                article = scrapper.scrap_ft_article(href)
+                result['article'].append(article)
+                print('scraped: ', article[:50])
+                sleep(ScrappingConfig.sleep_time)
+            else:
+                result['article'].append('void')
 
     clean_result(result)
 
     for i, j in result.items():
+        if i == 'article':
+            for art in j:
+                print(art)
         print(i, len(j))
 
     return result

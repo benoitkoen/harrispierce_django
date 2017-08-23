@@ -13,5 +13,5 @@ class Config:
 
 class ScrappingConfig:
     scrapping_limit = int(environ.get('SCRAPPING_LIMIT', '12'))
-    sleep_time = int(environ.get('SLEEP_TIME', '5'))
+    sleep_time = int(environ.get('SLEEP_TIME', '10'))
     scrap_article_boolean = environ.get('SCRAP_ARTICLE_BOOLEAN', False)
