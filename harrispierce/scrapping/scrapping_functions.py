@@ -266,12 +266,6 @@ def scrapft(scrapper, journal, section, url):
 
     clean_result(result)
 
-    for i, j in result.items():
-        if i == 'article':
-            for art in j:
-                print(art)
-        print(i, len(j))
-
     return result
 
 

@@ -1,4 +1,5 @@
 import requests
+from requests.exceptions import ConnectionError
 from lxml import html
 
 
@@ -38,10 +39,14 @@ class FTScrapingMachine:
             self.logged_in = True
 
         # Scrapping
-        result = self.session_requests.get(
-            article_url,
-            headers=dict(referer=article_url)
-        )
+        try:
+            result = self.session_requests.get(
+                article_url,
+                headers=dict(referer=article_url)
+            )
+        except ConnectionError as e:
+            print('Could not scrap article: ', e)
+            return 'void'
 
         tree = html.fromstring(result.content)
 
