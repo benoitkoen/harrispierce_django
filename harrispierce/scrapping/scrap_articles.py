@@ -1,48 +1,62 @@
 import requests
+from requests.exceptions import ConnectionError
 from lxml import html
 
 
-def scrap_ft_article(login_url, article_url):
-    payload = {
-        "email": "benoit.koenig@hec.edu",
-        "password": "attention"
-    }
+class FTScrapingMachine:
 
-    session_requests = requests.session()
+    def __init__(self,
+                 email="benoit.koenig@hec.edu",
+                 password="attention",
+                 login_url='https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
+                 ):         #https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2Fd5119962-868f-11e7-8bb1-5ba57d47eff7
 
-    result = session_requests.get(login_url)
+        self.payload = {
+            "email": email,
+            "password": password
+        }
+        self.login_url = login_url
+        self.logged_in = False
+        self.session_requests = None
 
-    tree = html.fromstring(result.text)
+    def scrap_ft_article(self, article_url):
 
-    result = session_requests.post(
-        login_url,
-        data=payload,
-        headers=dict(referer=login_url)
-    )
+        print('loggedin already? ', self.logged_in, '\n', article_url)
+        # if not logged in yet
+        if self.logged_in is False:
+            self.session_requests = requests.session()
 
-    result = session_requests.get(
-        article_url,
-        headers=dict(referer=article_url)
-    )
+            result = self.session_requests.get(self.login_url)
+            tree = html.fromstring(result.text)
+            result = self.session_requests.post(
+                self.login_url,
+                data=self.payload,
+                headers=dict(referer=self.login_url)
+            )
+            print('login successful: ', "My Account" in result.text)
+            print('login failed: ', "Sign in" in result.text)
 
-    tree = html.fromstring(result.content)
+            self.logged_in = True
 
-    paragraphes = tree.xpath("//div[@class='article__body n-content-body']/p/text()")
+        # Scrapping
+        try:
+            result = self.session_requests.get(
+                article_url,
+                headers=dict(referer=article_url)
+            )
+        except ConnectionError as e:
+            print('Could not scrap article: ', e)
+            return 'void'
 
-    article = ''
+        tree = html.fromstring(result.content)
 
-    for p in paragraphes:
-        article += p
+        paragraphes = tree.xpath("//div[@class='article__body n-content-body']/p/text()")
 
-    return article
+        article = ''
 
+        for p in paragraphes:
+            article += p
 
-#art = scrap_ft_article(
-#    'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
-#    'https://www.ft.com/content/87d644fc-73a4-11e7-aca6-c6bd07df1a3c')
-
-art = scrap_ft_article('https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c',
-                       'https://www.ft.com/content/a48c4aec-859c-11e7-8bb1-5ba57d47eff7')
-
-print(art)
-
+        if len(article) == 0:
+            return 'void'
+        return article

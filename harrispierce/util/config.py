@@ -9,3 +9,9 @@ class Config:
     db_port = environ.get('DB_PORT', '')
 
     secret_key = environ.get('SECRET_KEY', 'fake_secret_key')
+
+
+class ScrappingConfig:
+    scrapping_limit = int(environ.get('SCRAPPING_LIMIT', '12'))
+    sleep_time = int(environ.get('SLEEP_TIME', '10'))
+    scrap_article_boolean = environ.get('SCRAP_ARTICLE_BOOLEAN', False)

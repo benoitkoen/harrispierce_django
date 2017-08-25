@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup
 from time import sleep
 import ssl
 
-from harrispierce.scrapping.scrap_articles import scrap_ft_article
-#from harrispierce.processing.clean_articles import clean_article
+from harrispierce.util.config import ScrappingConfig
 
 context = ssl._create_unverified_context()
 result_dict = {'journal': [], 'section': [], 'title': [], 'href': [],
                'teaser': [], 'image': [], 'article': [], 'cleaned_article': []}
+
 
 def get_raw_data(url):
     page = urlopen(url, context=context)
@@ -23,7 +23,7 @@ def clean_result(dict):
                 val[index] = 'void'
 
 
-def scrapwsj1(journal, section, url):
+def scrapwsj1(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
@@ -34,14 +34,12 @@ def scrapwsj1(journal, section, url):
 
     big = top_section.find('article', {'class': 'hed-summ no-image lead-headline'})
 
-    try:
+
+    if big is not None:
         articles.append(list(big)[0])
         articles = articles[:-1]
 
-    except TypeError:
-        pass
-
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         if article.find('div', {'class': 'text-wrapper'}) is None:
             continue
@@ -73,7 +71,7 @@ def scrapwsj1(journal, section, url):
     return result
 
 
-def scrapwsj2(journal, section, url):
+def scrapwsj2(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
@@ -88,7 +86,7 @@ def scrapwsj2(journal, section, url):
     except IndexError:
         pass
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         result['journal'].append(journal)
         result['section'].append(section)
@@ -122,7 +120,7 @@ def scrapwsj2(journal, section, url):
     return result
 
 
-def scrapwsj3(journal, section, url):
+def scrapwsj3(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
@@ -136,7 +134,7 @@ def scrapwsj3(journal, section, url):
 
     articles = articles[0:5]
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         result['journal'].append(journal)
         result['section'].append(section)
@@ -173,7 +171,7 @@ def scrapwsj3(journal, section, url):
     return result
 
 
-def scrapwsj4(journal, section, url):
+def scrapwsj4(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
@@ -185,7 +183,7 @@ def scrapwsj4(journal, section, url):
 
     articles.append(list(big)[0])
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         result['journal'].append(journal)
         result['section'].append(section)
@@ -222,29 +220,32 @@ def scrapwsj4(journal, section, url):
     return result
 
 
-def scrapft(journal, section, url):
+def scrapft(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
 
     articles = soup.find_all('li', {'class': 'o-teaser-collection__item o-grid-row'})
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         if (article.find('img') is None) | (article.find('p', {'class': 'o-teaser__standfirst'}) is None):
             continue
+
         else:
+
             result['journal'].append(journal)
             result['section'].append(section)
 
             result['cleaned_article'].append('void')
-            result['article'].append('void')
 
             a = article.find('a', {'class': 'js-teaser-heading-link'})
-            title = a.text.strip()
 
+            title = a.text.strip()
             result['title'].append(title)
-            result['href'].append('https://www.ft.com'+a.get('href'))
+
+            href = 'https://www.ft.com'+a.get('href')
+            result['href'].append(href)
 
             p = article.find('p', {'class': 'o-teaser__standfirst'})
             result['teaser'].append(p.text)
@@ -255,34 +256,29 @@ def scrapft(journal, section, url):
             else:
                 result['image'].append('void')
 
-    login_url = \
-        'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2Fcontent%2F6f2f8b0e-73d9-11e7-aca6-c6bd07df1a3c'
-
-    for href in result['href']:
-        print(login_url, '\n', href)
-        article = scrap_ft_article(login_url, href)
-        result['article'].append(article)
-        print(article[:200])
-        sleep(60)
-
-    #for article in result['article']:
-    #    result['cleaned_content'].append(clean_article(article))
+            if ScrappingConfig.scrap_article_boolean is True:
+                # Article scrapping requiring login
+                article = scrapper.scrap_ft_article(href)
+                result['article'].append(article)
+                print('scraped: ', article[:50])
+                sleep(ScrappingConfig.sleep_time)
+            else:
+                result['article'].append('void')
 
     clean_result(result)
 
     return result
 
 
-def scrapnyt1(journal, section, url):
+def scrapnyt1(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
 
-    #down_section = soup.find('ol', {'class': 'story-menu theme-stream initial-set'})
     down_section = soup.find('div', {'class': 'stream'}).find('ol')
     articles = down_section.find_all('li')
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         image = article.find('img')
         if image is not None:
@@ -308,7 +304,7 @@ def scrapnyt1(journal, section, url):
     return result
 
 
-def scrapnyt2(journal, section, url):
+def scrapnyt2(scrapper, journal, section, url):
 
     soup = get_raw_data(url)
     result = result_dict
@@ -316,7 +312,7 @@ def scrapnyt2(journal, section, url):
     col = soup.find('div', {'class': 'columnGroup last'})
     articles = col.find_all('div', {'class': 'story'})
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         result['journal'].append(journal)
         result['section'].append(section)
@@ -344,7 +340,7 @@ def scrapnyt2(journal, section, url):
     return result
 
 
-def scraple(journal, section, url):
+def scraple(scrapper, journal, section, url):
     soup = get_raw_data(url)
     result = result_dict
 
@@ -374,7 +370,7 @@ def scraple(journal, section, url):
     else:
         result['image'].append('void')
 
-    for article in articles:
+    for article in articles[:ScrappingConfig.scrapping_limit]:
 
         result['journal'].append(journal)
         result['section'].append(section)
