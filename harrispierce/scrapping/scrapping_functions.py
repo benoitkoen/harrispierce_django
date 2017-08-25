@@ -34,6 +34,7 @@ def scrapwsj1(scrapper, journal, section, url):
 
     big = top_section.find('article', {'class': 'hed-summ no-image lead-headline'})
 
+
     if big is not None:
         articles.append(list(big)[0])
         articles = articles[:-1]

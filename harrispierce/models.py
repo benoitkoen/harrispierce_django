@@ -47,14 +47,15 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('article-detail', kwargs={'pk': self.pk})
 
-"""
+
 class Choice(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    section = 
-    journal = 
-    article = 
-    cleaned_article = 
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     choice_date = models.DateTimeField(auto_now_add=True)
-"""
 
 
+class Following(models.Model):
+    user_followed = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_followed')
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='follower')

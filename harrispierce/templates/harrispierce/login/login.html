@@ -2,13 +2,9 @@
 
 {%block blockname %}
 
-{% if form.errors %}
-    <p class="error"> Sorry, invalid username or password.</p>
-{% endif %}
-
     <div>LOGIN</div>
 
-    <form action="" method="post">{% csrf_token %} {{ form.as_p }}
+    <form action="" method="POST">{% csrf_token %} {{ form.as_p }}
     <input type="submit" value="Login" /> </form>
 {% endblock %}
 

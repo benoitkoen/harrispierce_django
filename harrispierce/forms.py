@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 
 from harrispierce.models import Article, Journal, Section
@@ -13,9 +14,15 @@ class LoginForm(forms.Form):
         model = User
         fields = ['user_name', 'password']
 
-    def login(self):
-        return
-        # send email using the self.cleaned_data dictionary pass
+    def clean(self, *args, **kwargs):
+        user_name = self.cleaned_data.get('user_name')
+        password = self.cleaned_data.get('password')
+        if user_name and password:
+            user = authenticate(username=user_name, password=password)
+            if not user:
+                raise forms.ValidationError("Sorry, invalid username or password.")
+
+        return super(LoginForm, self).clean(*args, **kwargs)
 
 
 class NewUserForm(forms.ModelForm):
@@ -27,9 +34,16 @@ class NewUserForm(forms.ModelForm):
         model = User
         fields = ['user_name', 'email', 'password']
 
-    def clean_email(self):
-        return
-        # send email using the self.cleaned_data dictionary pass
+    def clean(self, *args, **kwargs):
+        email = self.cleaned_data.get('email')
+        user_name = self.cleaned_data.get('user_name')
+        password = self.cleaned_data.get('password')
+        if user_name and password:
+            user = authenticate(username=user_name, password=password)
+            if User.objects.filter(username=user_name).exists() or User.objects.filter(email=email).exists():
+                raise forms.ValidationError("That user or email is already taken.")
+
+        return super(NewUserForm, self).clean(*args, **kwargs)
 
 
 class SearchForm(forms.Form):
@@ -41,3 +55,4 @@ class SearchForm(forms.Form):
     )
     Date = forms.CharField(widget=forms.SelectDateWidget)
     Quantity = forms.CharField(widget=forms.NumberInput)
+
