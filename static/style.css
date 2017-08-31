@@ -19,7 +19,15 @@ h2 {
     margin-right:10px;
 }
 
+#parent_element {
+    margin-top: 0px;
+    margin-bottom: 40px;
+    font-size: 100%;
+    font-weight: 200;
+    text-align: center;
+}
 
+/* INDEX */
 input[class="section_cb"]:not(:checked),
 input[class="section_cb"]:checked {
   position: absolute;
