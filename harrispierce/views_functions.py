@@ -13,6 +13,7 @@ def display_get(selection):
 
     for journal_section in selection:
         journal, section = journal_section.split('-')
+
         articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
 
         if journal not in selection_dict.keys():

@@ -1,0 +1,132 @@
+body {
+    padding-top: 50px; !important;
+}
+
+h2 {
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.navbar-inverse {
+    margin : 0 !important;
+    border-radius:0 !important;
+}
+
+#menu-toggle{
+    float:left !important;
+    vertical-align: middle;
+    margin-right:10px;
+}
+
+
+input[class="section_cb"]:not(:checked),
+input[class="section_cb"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+
+input[class="section_cb"]:not(:checked) + label,
+input[class="section_cb"]:checked + label{
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  padding-bottom: 25px;
+}
+
+input[class="section_cb"]:not(:checked) + label:before,
+input[class="section_cb"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left:50%; top: 15px;
+  width: 20px; height: 20px;
+  background: #f8f8f8;
+  border-radius: 3px;
+  border: 2px solid #aaa;
+  -webkit-box-shadow: groove 0 0 13px rgba(0, 0, 0, 0.5);
+  box-shadow: groove 0 0 13px rgba(0, 0, 0, 0.5);
+  transform: translateX(-50%);
+}
+
+input[class="section_cb"]:not(:checked) + label:after,
+input[class="section_cb"]:checked + label:after {
+  content: '✔';
+  position: absolute;
+  top: 15px; left: 0;
+  right: 0;
+  font-size: 15px;
+  color: #4eb5e5;
+  transition: all .2s;
+  -webkit-transition: all .2s;
+  -moz-transition: all .2s;
+  -ms-transition: all .2s;
+  -o-transition: all .2s;
+  text-align: center;
+}
+input[class="section_cb"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+input[class="section_cb"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+
+/* DISPLAY */
+/* The main container */
+.journal {
+    text-align: center;
+}
+
+.journal > label {
+    overflow: hidden;/* Makes this div contain its floats */
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-family: "trajan";
+    width: 100%;
+}
+
+.section {
+    text-align: center;
+}
+
+.section > label {
+    width: 100%;
+    text-align: center;
+    text-transform: capitalize;
+    background-color: gainsboro;
+    font-family: "trajan";
+    margin: 0;
+}
+
+.article {
+    display: inline-block;
+    text-align:center;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    max-height: 200px;
+    max-width:200px;
+}
+
+/*
+.img-responsive{
+  !important; max-height: 160px;
+  !important; max-width:300px;
+   margin-bottom: 200px;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+*/
+
+
+
+
+
+

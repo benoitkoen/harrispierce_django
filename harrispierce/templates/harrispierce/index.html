@@ -1,7 +1,6 @@
 {% extends 'harrispierce/shared/base.html' %}
 
 {%block blockname %}
-    <div>INDEX</div><br>
     <form action="display.html/" method="get">{% csrf_token %}
         {% include 'harrispierce/shared/index_common.html' %}
     </form>

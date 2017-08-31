@@ -1,10 +1,10 @@
 
 {% for journal in journals %}
-    <h1 class="journal">{{ journal.name }}</h1>
+    <h1 class="journal"><label>{{ journal.name }}</label></h1>
     {% for section in journal.sections.all %}
-        <input type="checkbox" class="section" name="selection" value="{{journal.name}}-{{section.name}}">
+        <input type="checkbox" class="section_cb" name="selection" value="{{journal.name}}-{{section.name}}">
             <label>{{ section.name }}</label>
     {% endfor %}
 {% endfor %}
 <br>
-<input type="submit" value="Let's Go!">
+<input class="btn btn-primary btn-lg btn-block" type="submit" value="Let's Go!">
