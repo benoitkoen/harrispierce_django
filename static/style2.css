@@ -1,5 +1,7 @@
+
 body {
     padding-top: 50px; !important;
+    font-family: "trajan";
 }
 
 h2 {
@@ -19,7 +21,6 @@ h2 {
     margin-right:10px;
 }
 
-/*
 #parent_element {
     margin-top: 0px;
     margin-bottom: 40px;
@@ -27,7 +28,6 @@ h2 {
     font-weight: 200;
     text-align: center;
 }
-*/
 
 /* INDEX */
 input[class="section_cb"]:not(:checked),
@@ -82,67 +82,40 @@ input[class="section_cb"]:checked + label:after {
   transform: scale(1);
 }
 
-
-
 /* DISPLAY */
-/* The main container
+/* The main container */
 .journal {
     text-align: center;
 
 }
 
-h3.journal_name > label {
+.journal_name > label {
     overflow: hidden;
-    text-align: center;
     text-transform: uppercase;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    font-family: "trajan";
-    width: 100%;
-}
+    margin-top: 10px;
 
-.section {
-    text-align: center;
 }
 
 .section > label {
     width: 100%;
-    text-align: center;
     text-transform: capitalize;
     background-color: gainsboro;
-    font-family: "trajan";
-    margin: 0;
+    margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 div.article {
-    font-family: "trajan";
     display: inline-block;
-    text-align:center;
-    margin-bottom: 40px;
-    margin-top: 400px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     margin-left: 20px;
     margin-right: 20px;
-    max-height: 200px;
+    /*max-height: 200px;*/
     max-width:300px;
 }
 
-.article > p {
-    font-family: "trajan";
-    margin: auto;
-    font-size: 80%;
-    font-weight: 100;`
-}
-
-
 .img-responsive{
-  !important; max-height: 160px;
-  !important; max-width:300px;
+  !important; max-width:100%;
+  !important; max-height:50%;
    margin: 0 auto;
 }
-
-
-*/
-
-
-
-
