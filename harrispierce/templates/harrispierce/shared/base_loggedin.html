@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
     <link rel="stylesheet" href="{% static 'style2.css' %}">
-    <link rel="stylesheet" href="{% static 'side_bar.css' %}">
+    <link rel="stylesheet" href="{% static 'side_bar2.css' %}">
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -21,7 +21,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="btn btn-info navbar-btn" id="menu-toggle">
+                <a href="#" class="btn btn-primary navbar-btn" id="menu-toggle">
                     <span class="caret"></a>
                 <a href="{% url 'index_perso' %}" class="navbar-brand">Harris & Pierce</a>
             </div>
@@ -41,10 +41,21 @@
 
     <div id="wrapper">
         <div id="sidebar-wrapper">
+            <div id="loggedin" class="well well-sm">Logged in as {{request.user.username}}</div>
             <ul class="sidebar-nav">
-                <li><div id="loggedin" class="well well-sm">Logged in as {{request.user.username}}</div></li>
-                <li><a href="#">Account</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Profile</a></li>
+                <li><a href="#search_popup" data-toggle="modal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Follow someone</a></li>
+
+                <li class="dropdown">
+                        <a href="#" class="dropdonw-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>Recommended <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="recommandations">
+                            <li><a href="#">Article 1</a></li>
+                            <li><a href="#">Article 2</a></li>
+                            <li><a href="#">Article 3</a></li>
+                        </ul>
+                    </li>
+
             </ul>
         </div>
 
@@ -71,6 +82,29 @@
             $("#wrapper").toggleClass("menuDisplayed");
         });
     </script>
+
+
+    <!-- popup window for search -->
+    <div class="modal fade" id="search_popup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Search what you need.</h3>
+                </div>
+                <div class="modal-body">
+                    <form action="/login/display_search.html/" method="GET">{% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Search"/>
+                    </form>
+                    <button id = "cancel" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 
 </body>

@@ -1,4 +1,3 @@
-
 /* Sidebar */
 #sidebar-wrapper {
     z-index: 1;
@@ -6,8 +5,9 @@
     width: 0;
     height: 100%;
     overflow-y: hidden;
-    background: #428bca;
     position:fixed;
+
+    background: #3071a9;
 }
 
 /* Always take up entire screen */
@@ -31,8 +31,13 @@
 /* Sidebar styling - the entire ul list */
 #loggedin{
     text-align:center;
+    margin:0;
 }
 
+/* Icons */
+li > a > .glyphicon {
+  margin-right: 7px;
+}
 
 .sidebar-nav {
     padding: 0;
@@ -47,7 +52,7 @@
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #ddd;
+    color: white;
 }
 .sidebar-nav li div {
     display: block;
@@ -56,48 +61,9 @@
 }
 
 .sidebar-nav li a:hover {
-    background: black/*#16A085;*/
+    background: #428bca;
 }
 
-
-
-/*Recommandation by friends*/
-.DocumentList{
-    overflow-x:scroll;
-    overflow-y:scroll;
-    max-height: 200px;
-    width:100%;
-    text-overflow: ellipsis;
-    padding: 15px 15px;
+#recommandations{
+    width: 100%;
 }
-
-.DocumentItem{
-    padding:0;
-    margin: 0;
-    width:200px;
-    max-height: 200px;
-    text-align: center;
-    
-}
-.DocumentItem > p{
-    overflow: hidden;
-    text-overflow: "ellipsis";
-    max-height: 200px;
-    max-width:200px;
-   white-space: pre-wrap;      /* CSS3 */   
-   white-space: -moz-pre-wrap; /* Firefox */    
-   white-space: -pre-wrap;     /* Opera <7 */   
-   white-space: -o-pre-wrap;   /* Opera 7 */    
-   word-wrap: break-word; 
-}
-
-.list-inline {
-    white-space:nowrap;
-}
-
-
-
-
-
-
-
