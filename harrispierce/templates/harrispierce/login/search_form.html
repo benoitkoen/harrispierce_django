@@ -1,10 +1,23 @@
-{% extends 'harrispierce/base_loggedin.html' %}
 
-{%block blockname %}
-    <div>Search</div>
 
-    <form action="/login/display_search.html/" method="GET">{% csrf_token %} {{ form.as_p }}
-        <input type="submit" value="Search"/>
-    </form>
-    <button id = "cancel" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
-{% endblock %}
+<div class="form-group">
+<form action="{% url 'display_search' %}" id="search_form" method="GET">{% csrf_token %}
+    <a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
+    <h3>Search articles.</h3>
+    <hr>
+    <label>Keyword: </label>
+    {{ form.Keyword }}
+    <br>
+    {{ form.Sources }}
+    <br>
+    <label>From: </label>
+    {{ form.Date }}
+    <br>
+    <label>Quantity: </label>
+    {{ form.Quantity }}
+    <hr>
+    <input class="btn btn-primary" type="submit" value="Search"/>
+    <input class="btn btn-secondary" data-dismiss="modal" type="submit" value="Cancel"/>
+</form>
+</div>
+

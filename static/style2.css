@@ -133,3 +133,28 @@ div.article {
   !important; max-height:50%;
    margin: 0 auto;
 }
+
+
+/* popup search */
+
+#search_form{
+    padding:20px;
+    text-align:center;
+}
+
+#search_form li {
+    display: inline-block;
+    text-decoration: none;
+    margin-left: 15px;
+    margin-right: 15px;
+
+}
+#search_form ul {
+    padding: 0;
+
+}
+
+#search_form > label {
+    margin-bottom: 20px;
+
+}

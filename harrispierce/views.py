@@ -129,7 +129,8 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
 
 class SearchFormView(generic.FormView):
     form_class = SearchForm
-    #template_name = 'harrispierce/login/search_form.html'
+    template_name = 'harrispierce/login/search_form.html'
+    #template_name = 'harrispierce/shared/base_loggedin.html'
     success_url = reverse_lazy('display_search')
 
 

@@ -44,7 +44,8 @@
             <div id="loggedin" class="well well-sm">Logged in as {{request.user.username}}</div>
             <ul class="sidebar-nav">
                 <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Profile</a></li>
-                <li><a href="#search_popup" data-toggle="modal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</a></li>
+                <!-- {% url 'search_form' %} -->
+                <li><a href="{% url 'search_form' %}" data-toggle="modal" data-target="#search_popup"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Follow someone</a></li>
 
                 <li class="dropdown">
@@ -89,15 +90,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>Search what you need.</h3>
+                    <h3>Search what you need.<a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a></h3>
                 </div>
-                <div class="modal-body">
-                    <form action="/login/display_search.html/" method="GET">{% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" value="Search"/>
-                    </form>
-                    <button id = "cancel" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
-                </div>
+                    <div class="modal-body">
+
+                    </div>
                 <div class="modal-footer">
                 </div>
             </div>
