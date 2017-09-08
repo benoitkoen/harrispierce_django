@@ -54,5 +54,5 @@ class SearchForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'section_cb2'})
     )
     Date = forms.CharField(widget=forms.SelectDateWidget)
-    Quantity = forms.CharField(widget=forms.NumberInput)
+    Quantity = forms.IntegerField(widget=forms.NumberInput)
 

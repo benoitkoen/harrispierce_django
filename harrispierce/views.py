@@ -11,7 +11,7 @@ from django.db.models import Q
 
 from .forms import LoginForm, NewUserForm, SearchForm
 from .models import Article, Journal, Section
-from .views_functions import index_get, display_get
+from .views_functions import index_get, display_get, display_search
 
 
 class NewUserView(generic.FormView):
@@ -130,7 +130,6 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
 class SearchFormView(generic.FormView):
     form_class = SearchForm
     template_name = 'harrispierce/login/search_form.html'
-    #template_name = 'harrispierce/shared/base_loggedin.html'
     success_url = reverse_lazy('display_search')
 
 
@@ -145,21 +144,11 @@ class DisplaySearchView(generic.ListView):
             keyword = form['Keyword'].value()
             sources = form['Sources'].value()
             date = form['Date'].value()
-            quantity = form['Quantity'].value()
+            quantity = int(form['Quantity'].value())
 
-            selection_dict = {}
+            args = display_search(keyword, sources, date, quantity)
+            print(args)
 
-            for journal in sources:
-
-                articles = Article.objects.filter(
-                    (Q(teaser__contains=keyword) | Q(title__contains=keyword)),
-                    pub_date__gte=date,
-                    journal_id__name=journal,
-                ).order_by('pub_date')[:quantity]
-
-                selection_dict[journal] = articles
-
-            args = {'selection_dict': selection_dict}
             return render(request, self.template_name, args)
 
 

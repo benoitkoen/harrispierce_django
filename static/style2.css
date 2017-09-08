@@ -107,6 +107,7 @@ input[class="section_cb"]:checked + label:after {
     overflow: hidden;
     text-transform: uppercase;
     margin-top: 10px;
+    width: 100%;
 
 }
 
