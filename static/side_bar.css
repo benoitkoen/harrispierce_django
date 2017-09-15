@@ -1,0 +1,103 @@
+
+/* Sidebar */
+#sidebar-wrapper {
+    z-index: 1;
+    position: absolute;
+    width: 0;
+    height: 100%;
+    overflow-y: hidden;
+    background: #428bca;
+    position:fixed;
+}
+
+/* Always take up entire screen */
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+
+/* Change with of sidebar from 0 to 250px */
+#wrapper.menuDisplayed #sidebar-wrapper {
+    width: 250px;
+}
+
+/* Since we added left padding, we need to shrink the width by 250px */
+#wrapper.menuDisplayed #page-content-wrapper {
+    padding-left: 250px;
+}
+
+/* Sidebar styling - the entire ul list */
+#loggedin{
+    text-align:center;
+}
+
+
+.sidebar-nav {
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #ddd;
+}
+.sidebar-nav li div {
+    display: block;
+    text-decoration: none;
+    color: #ddd;
+}
+
+.sidebar-nav li a:hover {
+    background: black/*#16A085;*/
+}
+
+
+
+/*Recommandation by friends*/
+.DocumentList{
+    overflow-x:scroll;
+    overflow-y:scroll;
+    max-height: 200px;
+    width:100%;
+    text-overflow: ellipsis;
+    padding: 15px 15px;
+}
+
+.DocumentItem{
+    padding:0;
+    margin: 0;
+    width:200px;
+    max-height: 200px;
+    text-align: center;
+    
+}
+.DocumentItem > p{
+    overflow: hidden;
+    text-overflow: "ellipsis";
+    max-height: 200px;
+    max-width:200px;
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word; 
+}
+
+.list-inline {
+    white-space:nowrap;
+}
+
+
+
+
+
+
+

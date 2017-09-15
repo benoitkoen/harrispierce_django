@@ -1,10 +1,28 @@
 
-{% for journal in journals %}
-    <h1 class="journal">{{ journal.name }}</h1>
-    {% for section in journal.sections.all %}
-        <input type="checkbox" class="section" name="selection" value="{{journal.name}}-{{section.name}}">
-            <label>{{ section.name }}</label>
-    {% endfor %}
-{% endfor %}
-<br>
-<input type="submit" value="Let's Go!">
+
+<div class="container-fluid">
+<h2> Make your selection.</h2><hr>
+    <div class="row" >
+        <div id="parent_element">
+            <script>
+                {% for journal in journals %}
+                    $('#parent_element').append(
+                        '<div class="container" id="{{ journal.name|cut:' ' }}"><h2>{{ journal.name }}</h2></div><hr>'
+                    )
+                    {% for section in journal.sections.all %}
+                            $('#{{ journal.name|cut:' ' }}').append(
+                                '<input id="{{ journal.name|cut:' ' }}{{ section.name }}" type="checkbox" class="section_cb" name="selection" value="{{journal.name}}-{{section.name}}">'
+                            )
+                            $('#{{ journal.name|cut:' ' }}').append(
+                                '<label for="{{ journal.name|cut:' ' }}{{ section.name }}">{{ section.name }}</label>'
+                            )
+
+                    {% endfor %}
+                {% endfor %}
+                $('#parent_element').append(
+                    "<input class='btn btn-primary btn-lg btn-block' type='submit' value='Go!'>"
+                )
+            </script>
+        </div>
+    </div>
+</div>

@@ -48,11 +48,11 @@ class NewUserForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
 
-    Keyword = forms.CharField(widget=forms.TextInput)
+    Keyword = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Trump, Brexit, Syria...'}))
     Sources = forms.ModelMultipleChoiceField(
         queryset=Journal.objects.all().values_list('name', flat=True),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'section_cb2'})
     )
     Date = forms.CharField(widget=forms.SelectDateWidget)
-    Quantity = forms.CharField(widget=forms.NumberInput)
+    Quantity = forms.IntegerField(widget=forms.NumberInput)
 

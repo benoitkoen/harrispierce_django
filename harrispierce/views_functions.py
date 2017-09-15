@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from .models import Article, Journal, Section
 
 
@@ -13,7 +15,8 @@ def display_get(selection):
 
     for journal_section in selection:
         journal, section = journal_section.split('-')
-        articles = Article.objects.filter(journal_id__name=journal, section_id__name=section)
+
+        articles = Article.objects.filter(journal_id__name=journal, section_id__name=section).order_by('pub_date')[:9]
 
         if journal not in selection_dict.keys():
             article_selection = {}
@@ -22,6 +25,24 @@ def display_get(selection):
         else:
             article_selection[section] = articles
             selection_dict[journal] = article_selection
+
+    args = {'selection_dict': selection_dict}
+
+    return args
+
+
+def display_search(keyword, sources, date, quantity):
+    selection_dict = {}
+
+    for journal in sources:
+
+        articles = Article.objects.filter(
+            (Q(teaser__icontains=keyword) | Q(title__icontains=keyword)),
+            pub_date__gte=date,
+            journal_id__name=journal,
+        ).order_by('pub_date')[:quantity]
+
+        selection_dict[journal] = articles
 
     args = {'selection_dict': selection_dict}
 

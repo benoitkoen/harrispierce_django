@@ -1,5 +1,17 @@
 {% extends 'harrispierce/shared/base_loggedin.html' %}
 
-{%block contentblock %}
+{%block blockname %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12" id="div-recom">
+                <h2>Your Reading List</h2>
+                    <div class="DocumentList">
+                        <ul class="list-inline">
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+
     {% include 'harrispierce/shared/display_common.html' %}
 {% endblock %}

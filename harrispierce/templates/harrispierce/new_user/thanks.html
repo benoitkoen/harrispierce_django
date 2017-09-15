@@ -1,0 +1,8 @@
+{% extends 'harrispierce/shared/base_loggedin.html' %}
+
+{%block blockname %}
+    <h2>Welcome {{request.user.username}}</h2><br>
+    <h3>Take advantage of all our latest features!</h3>
+    <hr>
+    <button class="btn btn-primary btn-lg" window.location.href="{% url 'index_perso' %}">Start Using</button>
+{% endblock %}

@@ -1,10 +1,27 @@
 {% extends 'harrispierce/shared/base.html' %}
 
 {%block blockname %}
+    <div class="form-group">
+    <form action="" id="login_form" class="popup" method="POST">{% csrf_token %}
 
-    <div>LOGIN</div>
+        {% comment %}
+        <!--<a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>-->
+        {% endcomment %}
 
-    <form action="" method="POST">{% csrf_token %} {{ form.as_p }}
-    <input type="submit" value="Login" /> </form>
+        <h3>Login</h3>
+        <hr>
+        <label>Username: </label>
+        {{ form.user_name }}
+        <br>
+        <label>Password: </label>
+        {{ form.password }}
+        <hr>
+        <input class="btn btn-primary" type="submit" value="Login"/>
+
+        {% comment %}
+        <!--<input class="btn btn-secondary" data-dismiss="modal" type="submit" value="Cancel"/>-->
+        {% endcomment %}
+    </form>
+    </div>
 {% endblock %}
 
