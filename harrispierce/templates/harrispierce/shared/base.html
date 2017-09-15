@@ -8,7 +8,7 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
-    <link rel="stylesheet" href="{% static 'style2.css' %}">
+    <link rel="stylesheet" href="{% static 'style3.css' %}">
 
 </head>
 <body>
@@ -32,10 +32,10 @@
                     <li><a href="{% url 'index' %}">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <!--<li><button type="button" class="btn btn-info navbar-btn" data-toggle="modal" data-tagret="#popUpWindow">Login</button></li>-->
                     <li><a href="{% url 'login' %}">Login</a></li>
-                    <!--<li><button type="button" class="btn btn-info navbar-btn">New User</button></li>-->
-                    <li><a href="{% url 'new_user' %}">New User</a></li>
+                    <li><a href="{% url 'new_user' %}">New User</a></li>-->
+                    <!--<li><a href="{% url 'login' %}" data-toggle="modal" data-target="#login_popup">Login</a></li>
+                    <li><a href="{% url 'new_user' %}" data-toggle="modal" data-target="#newuser_popup">New User</a></li>-->
                 </ul>
             </div>
         </div>
@@ -46,6 +46,39 @@
 
     {% block contentblock %}
     {% endblock %}
+
+
+    <!-- popup window for login -->
+    <div class="modal fade" id="login_popup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                    <div class="modal-body">
+
+                    </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup window for new user -->
+    <div class="modal fade" id="newuser_popup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                    <div class="modal-body">
+
+                    </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>

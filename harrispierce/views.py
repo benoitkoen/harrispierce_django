@@ -20,10 +20,6 @@ class NewUserView(generic.FormView):
     template_name = 'harrispierce/new_user/new_user.html'
     success_url = reverse_lazy('index_perso')
 
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
-
     def post(self, request):
         form = self.form_class(request.POST)
 
@@ -53,11 +49,21 @@ class NewUserView(generic.FormView):
 
         return render(request, self.template_name, {'form': form})
 
+    def get(self, request):
+        form = self.form_class(request.GET)
+        return render(request, self.template_name, {'form': form})
+
+
+class ThanksView(generic.ListView):
+    template_name = 'harrispierce/new_user/thanks.html'
+    success_url = reverse_lazy('thanks')
+
 
 class LoginView(generic.FormView):
 
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
+    success_url = reverse_lazy('index_perso')
 
     def post(self, request):
 

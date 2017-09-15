@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #'userprofile.apps.UserprofileConfig',
     'harrispierce.apps.HarrispierceConfig',
     'django.contrib.admin',
     'django.contrib.auth',

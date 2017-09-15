@@ -136,26 +136,27 @@ div.article {
 }
 
 
-/* popup search */
+/* popup windows */
 
-#search_form{
+.popup{
     padding:20px;
     text-align:center;
 }
 
-#search_form li {
+.popup li {
     display: inline-block;
     text-decoration: none;
     margin-left: 15px;
     margin-right: 15px;
 
 }
-#search_form ul {
+.popup ul {
     padding: 0;
 
 }
 
-#search_form > label {
+.popup > label {
     margin-bottom: 20px;
 
 }
+
