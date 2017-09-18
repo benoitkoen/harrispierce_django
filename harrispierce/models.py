@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from datetime import datetime, timedelta
 
+#from ..userprofile.models import Profile, Choice, Following
+
 
 class Section(models.Model):
     name = models.CharField(max_length=200)
 
-    def __str__(self):              # __unicode__ on Python 2
+    def __str__(self):
         return self.name
 
 
@@ -20,7 +21,7 @@ class Journal(models.Model):
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
 
-    def __str__(self):              # __unicode__ on Python 2
+    def __str__(self):             
         return "%s (%s)" % (
             self.name,
             ", ".join(section.name for section in self.sections.all()),

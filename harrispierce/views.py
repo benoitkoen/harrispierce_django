@@ -103,7 +103,7 @@ class DisplayView(generic.ListView):
             if len(selection) == 0:
                 return redirect('index')
 
-            args = display_get(selection)
+            args = display_get(selection, None)
 
             return render(request, self.template_name, args)
 
@@ -128,7 +128,10 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
             if len(selection) == 0:
                 return redirect('index')
 
-            args = display_get(selection)
+            #user = request.user
+            user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
+
+            args = display_get(selection, user)
 
             return render(request, self.template_name, args)
 
