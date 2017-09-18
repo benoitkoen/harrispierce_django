@@ -115,7 +115,11 @@ class IndexPersoView(LoginRequiredMixin, generic.ListView):
     template_name = 'harrispierce/login/index_perso.html'
 
     def get(self, request, **kwargs):
-        journals, args = index_get()
+
+        user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
+
+        #journals, args = index_get(user)
+        args = index_get(user)
         return render(request, self.template_name, args)
 
 
@@ -128,7 +132,6 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
             if len(selection) == 0:
                 return redirect('index')
 
-            #user = request.user
             user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
 
             args = display_get(selection, user)

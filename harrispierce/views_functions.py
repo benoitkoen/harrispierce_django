@@ -13,11 +13,17 @@ database = DATABASES['default']['NAME']  # 'postgres'
 myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
 
 
-def index_get():
+def index_get(user):
     journals = Journal.objects.prefetch_related('sections').all()
-    args = {'journals': journals}
 
-    return journals, args
+    choices = None
+
+    if user is not None:
+        choices = get_choices(myConnection, user)
+
+    args = {'journals': journals, 'choices': choices}
+
+    return args
 
 
 def display_get(selection, user):
@@ -63,7 +69,7 @@ def display_search(keyword, sources, date, quantity):
 
 
 def insert_choices(conn, selection_dict, user):
-    print('user: ', user)
+
     choices = {}
     for journal in selection_dict.keys():
         choices[journal] = list(selection_dict[journal].keys())
@@ -95,3 +101,37 @@ def insert_choices(conn, selection_dict, user):
                          section_id,
                          datetime.utcnow(),
                          ))
+
+
+def get_choices(conn, user):
+
+    choices = {}
+
+    conn.autocommit = True
+    cur = conn.cursor()
+
+    cur.execute('SELECT id FROM auth_user WHERE username = {}{}{}'.format("'", user, "'"))
+    user_id = cur.fetchone()[0]
+    cur.execute("SELECT date_trunc('seconds', choice_date) FROM userprofile_choice WHERE user_id = {} ORDER BY date_trunc('seconds', choice_date) DESC limit 1".format(user_id))
+    latest = cur.fetchone()[0]
+    print('kfjsdfksskdjhf', latest)
+
+    cur.execute("SELECT choice_date, journal_id, section_id FROM userprofile_choice WHERE user_id = %s and date_trunc('seconds', choice_date) = %s", [user_id, latest])
+
+    result = cur.fetchall()
+
+    print('WOOOOOOOOO', result)
+
+    for row in result:
+        journal = row[1]
+        section = row[2]
+
+        if journal not in choices.keys():
+            choices[journal] = []
+            choices[journal].append(section)
+        else:
+            choices[journal].append(section)
+
+        print(choices)
+
+    return choices
