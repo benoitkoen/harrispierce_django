@@ -1,0 +1,13 @@
+
+<div id="profile" class="popup">
+    <a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
+    <h3>Profile</h3>
+    <hr>
+    <label>Username: </label>
+    {{request.user.username}}
+    <br>
+    <label>Password: </label>
+    <hr>
+    <input class="btn btn-primary" type="submit" value="Login"/>
+    <input class="btn btn-secondary" data-dismiss="modal" type="submit" value="Cancel"/>
+</div>

@@ -1,6 +1,16 @@
 from django.db.models import Q
+from datetime import datetime
+import psycopg2
 
 from .models import Article, Journal, Section
+from harrispierceDjango.settings.local import DATABASES
+
+hostname = ''
+username = DATABASES['default']['USER']  # 'postgres'
+password = ''
+database = DATABASES['default']['NAME']  # 'postgres'
+
+myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
 
 
 def index_get():
@@ -10,7 +20,7 @@ def index_get():
     return journals, args
 
 
-def display_get(selection):
+def display_get(selection, user):
     selection_dict = {}
 
     for journal_section in selection:
@@ -25,6 +35,9 @@ def display_get(selection):
         else:
             article_selection[section] = articles
             selection_dict[journal] = article_selection
+
+    if user is not None:
+        insert_choices(myConnection, selection_dict, user)
 
     args = {'selection_dict': selection_dict}
 
@@ -49,14 +62,36 @@ def display_search(keyword, sources, date, quantity):
     return args
 
 
-def insert_choices(conn, selection_dict):
+def insert_choices(conn, selection_dict, user):
+    print('user: ', user)
+    choices = {}
+    for journal in selection_dict.keys():
+        choices[journal] = list(selection_dict[journal].keys())
+
     conn.autocommit = True
     cur = conn.cursor()
 
     cur.execute("deallocate all")
 
     cur.execute(
-        "prepare insertion as "
-        "INSERT INTO harrispierce_choice(user_id, journal_id, section_id, article_id, choice_date)"
-        "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
+        "prepare choice_insertion as "
+        "INSERT INTO userprofile_choice(user_id, journal_id, section_id, choice_date)"
+        "VALUES ($1, $2, $3, $4)"
     )
+
+    for journal in selection_dict.keys():
+        for section in selection_dict[journal]:
+
+            cur.execute('SELECT id FROM harrispierce_journal WHERE name = {}{}{}'.format("'", journal, "'"))
+            journal_id = cur.fetchone()[0]
+            cur.execute('SELECT id FROM harrispierce_section WHERE name = {}{}{}'.format("'", section, "'"))
+            section_id = cur.fetchone()[0]
+            cur.execute('SELECT id FROM auth_user WHERE username = {}{}{}'.format("'", user, "'"))
+            user_id = cur.fetchone()[0]
+
+            cur.execute("execute choice_insertion (%s, %s, %s, %s)",
+                        (user_id,
+                         journal_id,
+                         section_id,
+                         datetime.utcnow(),
+                         ))
