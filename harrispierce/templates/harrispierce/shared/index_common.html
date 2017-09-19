@@ -13,6 +13,10 @@
                             $('#{{ journal.name|cut:' ' }}').append(
                                 '<input id="{{ journal.name|cut:' ' }}{{ section.name }}" type="checkbox" class="section_cb" name="selection" value="{{journal.name}}-{{section.name}}">'
                             )
+                            {% if journal.id in choices.journal and section.id in choices.section %}
+                                $('#{{ journal.name|cut:' ' }}{{ section.name }}').attr('checked', true)
+                            {% endif %}
+
                             $('#{{ journal.name|cut:' ' }}').append(
                                 '<label for="{{ journal.name|cut:' ' }}{{ section.name }}">{{ section.name }}</label>'
                             )
