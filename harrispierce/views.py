@@ -90,7 +90,7 @@ class IndexView(generic.ListView):   # ListView
     template_name = 'harrispierce/index.html'
 
     def get(self, request, **kwargs):
-        journals, args = index_get()
+        args = index_get(None)
         return render(request, self.template_name, args)
 
 
