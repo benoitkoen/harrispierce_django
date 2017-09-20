@@ -4,7 +4,9 @@ from django import forms
 from django.shortcuts import get_object_or_404, render, loader, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.views import generic
 from django.db.models import Q
@@ -84,6 +86,13 @@ class LoginView(generic.FormView):
                     return redirect('index_perso')
 
         return render(request, self.template_name, {'form': form})
+
+
+class LogoutView(generic.RedirectView):
+
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
 
 
 class IndexView(generic.ListView):   # ListView

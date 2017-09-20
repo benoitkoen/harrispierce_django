@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^new_user/profile.html/$', views.ProfileView.as_view(), name='profile'),
+    url(r'^pin/$', views.PinView.as_view(), name='pin'),
 ]

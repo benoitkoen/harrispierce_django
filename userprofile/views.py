@@ -1,67 +1,30 @@
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from django.core.context_processors import csrf
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views import generic
 
-from .forms import UserProfileForm
+from .models import PinnedArticles
 
+class PinView(generic.FormView):
 
-
-class ProfileView(generic.FormView):
-
-    template_name = 'userprofile/profile.html'
-
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+    #form_class = PinForm
+    #template_name = 'harrispierce/login/login.html'
+    #success_url = reverse_lazy('index_perso')
 
     def post(self, request):
-        form = self.form_class(request.POST)
 
-        if form.is_valid():
+        if request.method == 'POST':
 
-            # create an object from the form but does not save it the db yet
-            user = form.save(commit=False)
+            user = request.user._wrapped if hasattr(request.user, '_wrapped') else request.user
+            journal = request.POST.get('journal')
+            section = request.POST.get('section')
+            article = request.POST.get('article')
 
-            #email =
-            user_name = form.cleaned_data['user_name']
-            password = form.cleaned_data['password']
+            PinnedArticles.objects.create(
+                user = user,
+                journal = journal,
+                section = section,
+                article = article
+            )
 
-            user.username = user_name
-            user.email = request.POST['email']
-            user.set_password(password)
-            user.save()
-
-            # user exists or not
-            user = authenticate(username=user_name, password=password)
-            if user is not None:
-
-                if user.is_active:
-                    # user signified to system as logged in
-                    login(request, user)
-
-                    return redirect('index_perso')
-
-        return render(request, self.template_name, {'form': form})
-"""
-@login_required
-def user_profile(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('profile')
-        else:
-            user = request.user
-
-            # trigger Userprofile property in Models
-            profile = user.profile
-            form = UserProfileForm(instance=profile)
-
-        args = {}
-        args.update(csrf(request))
-
-        args['form'] = form
-
-        return render_to_response('profile.html', args)
-"""
+        return HttpResponse('')

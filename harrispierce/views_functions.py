@@ -108,12 +108,10 @@ def insert_choices(conn, selection_dict, user):
                          datetime.utcnow(),
                          ))
 
-            print('WOOOOOOOO', res)
-
 
 def get_choices(conn, user):
 
-    choices = defaultdict(list) #{}
+    choices = defaultdict(list)
 
     conn.autocommit = True
     cur = conn.cursor()
@@ -140,16 +138,6 @@ def get_choices(conn, user):
         if section not in choices['section']:
             choices['section'].append(section)
 
-    """
-    for row in result:
-        journal = row[1]
-        section = row[2]
+    #articles = Article.objects.filter(journal_id__name=journal, section_id__name=section).order_by('pub_date')[:9]
 
-        if journal not in choices.keys():
-            choices[journal] = []
-            choices[journal].append(section)
-        else:
-            choices[journal].append(section)
-    """
-    print(choices)
     return choices
