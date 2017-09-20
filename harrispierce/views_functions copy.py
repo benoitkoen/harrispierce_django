@@ -4,7 +4,6 @@ from collections import defaultdict
 import psycopg2
 
 from .models import Article, Journal, Section
-from userprofile.models import Choice
 from harrispierceDjango.settings.local import DATABASES
 
 hostname = ''
@@ -32,24 +31,20 @@ def display_get(selection, user):
     selection_dict = {}
 
     for journal_section in selection:
-        journal_id, section_id = journal_section.split('-')
+        journal, section = journal_section.split('-')
 
-        journal = Journal.objects.get(pk=journal_id)
-        section = Section.objects.get(pk=section_id)
-        articles = Article.objects.filter(journal_id=journal_id, section_id=section_id).order_by('pub_date')[:9]
+        articles = Article.objects.filter(journal_id__name=journal, section_id__name=section).order_by('pub_date')[:9]
 
-        if journal.name not in selection_dict.keys():
+        if journal not in selection_dict.keys():
             article_selection = {}
-            article_selection[section.name] = articles
-            selection_dict[journal.name] = article_selection
+            article_selection[section] = articles
+            selection_dict[journal] = article_selection
         else:
-
-            article_selection[section.name] = articles
-            selection_dict[journal.name] = article_selection
+            article_selection[section] = articles
+            selection_dict[journal] = article_selection
 
     if user is not None:
-        insert_choices(selection, user)
-
+        insert_choices(myConnection, selection_dict, user)
 
     args = {'selection_dict': selection_dict}
 
@@ -74,19 +69,44 @@ def display_search(keyword, sources, date, quantity):
     return args
 
 
-def insert_choices(selection, user):
+def insert_choices(conn, selection_dict, user):
 
-    for journal_section in selection:
-        journal_id, section_id = journal_section.split('-')
+    choices = {}
+    for journal in selection_dict.keys():
+        choices[journal] = list(selection_dict[journal].keys())
 
-        journal = Journal.objects.get(pk=journal_id)
-        section = Section.objects.get(pk=section_id)
+    conn.autocommit = True
+    cur = conn.cursor()
 
-        Choice.objects.create(
-            user=user,
-            journal=journal,
-            section=section,
-        )
+    cur.execute("deallocate all")
+
+    cur.execute(
+        "prepare choice_insertion as "
+        "INSERT INTO userprofile_choice(user_id, journal_id, section_id, choice_date)"
+        "VALUES ($1, $2, $3, $4)"
+    )
+
+    for journal in selection_dict.keys():
+        for section in selection_dict[journal]:
+
+            cur.execute('SELECT jname, journal_id, name, section_id '
+                        'FROM harrispierce_section S, (select J.id as Jid, J.name as Jname, JS.journal_id as journal_id, JS.section_id as section_id FROM harrispierce_journal J '
+                        'LEFT JOIN harrispierce_journal_sections JS ON J.id = JS.journal_id) AS joi '
+                        'WHERE S.id = joi.section_id and jname = {}{}{} and name = {}{}{}'.format("'", journal, "'", "'", section, "'"))
+            res = cur.fetchone()
+
+            journal_id = res[1]
+            section_id = res[3]
+            
+            cur.execute('SELECT id FROM auth_user WHERE username = {}{}{}'.format("'", user, "'"))
+            user_id = cur.fetchone()[0]
+
+            cur.execute("execute choice_insertion (%s, %s, %s, %s)",
+                        (user_id,
+                         journal_id,
+                         section_id,
+                         datetime.utcnow(),
+                         ))
 
 
 def get_choices(conn, user):

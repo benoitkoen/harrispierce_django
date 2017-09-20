@@ -40,7 +40,7 @@
                                                     journal: '{{ journal }}',
                                                     section: '{{ section }}',
                                                     article: {{ article.pk }},
-
+                                                    csrfmiddlewaretoken: '{{ csrf_token }}'
                                                 },
                                                 success: function showAlert() {
                                                     $("#alert").show().delay(2000).fadeOut();

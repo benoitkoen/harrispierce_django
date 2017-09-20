@@ -144,7 +144,6 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
             user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user
 
             args = display_get(selection, user)
-            print('IN', args['selection_dict']['Wall Street Journal'].keys())
 
             return render(request, self.template_name, args)
 
