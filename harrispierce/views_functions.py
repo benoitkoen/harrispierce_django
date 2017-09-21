@@ -4,7 +4,7 @@ from collections import defaultdict
 import psycopg2
 
 from .models import Article, Journal, Section
-from userprofile.models import Choice
+from userprofile.models import Choice, PinnedArticles
 from harrispierceDjango.settings.local import DATABASES
 
 hostname = ''
@@ -29,6 +29,7 @@ def index_get(user):
 
 
 def display_get(selection, user):
+
     selection_dict = {}
 
     for journal_section in selection:
@@ -36,22 +37,23 @@ def display_get(selection, user):
 
         journal = Journal.objects.get(pk=journal_id)
         section = Section.objects.get(pk=section_id)
-        articles = Article.objects.filter(journal_id=journal_id, section_id=section_id).order_by('pub_date')[:9]
+        articles = Article.objects.filter(journal_id=journal_id, section_id=section_id).order_by('-pub_date')[:9]
 
-        if journal.name not in selection_dict.keys():
+        if journal not in selection_dict.keys():
             article_selection = {}
-            article_selection[section.name] = articles
-            selection_dict[journal.name] = article_selection
+            article_selection[section] = articles
+            selection_dict[journal] = article_selection
         else:
 
-            article_selection[section.name] = articles
-            selection_dict[journal.name] = article_selection
+            article_selection[section] = articles
+            selection_dict[journal] = article_selection
 
     if user is not None:
         insert_choices(selection, user)
 
+    pinned_articles = Article.objects.filter(id__in=PinnedArticles.objects.values('article_id')).order_by('pub_date')
 
-    args = {'selection_dict': selection_dict}
+    args = {'selection_dict': selection_dict, 'pinned_articles': pinned_articles}
 
     return args
 

@@ -3,4 +3,15 @@
 
 {%block contentblock %}
     {% include 'harrispierce/shared/display_common.html' %}
+
+    <script>
+    button = $('<button class = "btn btn-primary btn-lg btn-block">Go back to Index</button>');
+    button.click(function () {
+      window.location.href='{% url 'index' %}';
+    });
+    $('#sticky-list').append(
+        button
+    )
+    </script>
+
 {% endblock %}

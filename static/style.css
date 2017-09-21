@@ -93,6 +93,45 @@ input[class="section_cb"]:checked + label:after {
 }
 
 /* DISPLAY */
+/*Reading list*/
+.DocumentList{
+    overflow-x:scroll;
+    overflow-y:scroll;
+    max-height: 400px;
+    width:100%;
+    text-overflow: ellipsis;
+}
+
+
+.DocumentItem{
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+    max-width:300px;
+    max-height: 400px;
+    text-align: center;
+}
+
+
+.DocumentItem > p, a{
+    overflow: hidden;
+    text-overflow: "ellipsis";
+    max-height: 400px;
+    max-width:300px;
+   white-space: pre-wrap;
+   white-space: -moz-pre-wrap;
+   white-space: -pre-wrap;
+   white-space: -o-pre-wrap;
+   word-wrap: break-word;
+}
+
+
+.list-inline {
+    white-space:nowrap;
+}
+
+
 /* The main container */
 #sticky-list {
     padding-left: 10px
@@ -174,14 +213,21 @@ div.article {
 
 /* alert */
 
-#alert {
+#alertpin {
     position:fixed;
     display: None;
     top: 50%;
     z-index: 999;
     text-align: center;
     width: 100%;
-    padding: 10px
-    /*margin-top: -9em; set to a negative number 1/2 of your height
-    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+
+}
+#alertlike {
+    position:fixed;
+    display: None;
+    top: 50%;
+    z-index: 999;
+    text-align: center;
+    width: 100%;
+
 }

@@ -1,21 +1,21 @@
 
-
+<div id="alertlike" class="alert alert-success" role="alert"><strong>Your followers will surely check what you like!<strong></div>
+<div id="alertpin" class="alert alert-success" role="alert"><strong>Saved to your reading list.<strong></div>
 <div class="container-fluid">
     <h2 id="selection">Your Selection</h2>
         <div class="row" >
-            <div id="alert" class="alert alert-success" role="alert"><strong>Saved to your reading list.<strong></div>
             <div id="sticky-list">
                 <script>
                     {% for journal, article_selection in selection_dict.items %}
                         $('#sticky-list').append(
-                            "<div class='journal'><h3 class= 'journal_name' id={{ journal|cut:' ' }}><label>{{ journal }}</label></h3></div>"
+                            "<div class='journal'><h3 class= 'journal_name' id={{ journal.name|cut:' ' }}><label>{{ journal.name }}</label></h3></div>"
                         );
                         {% for section, article_list in article_selection.items %}
-                             $('#{{ journal|cut:" " }}').append(
-                                "<h4 class='section' id={{ journal|cut:" " }}{{ section|cut:" " }}><label>{{ section }}</label></h4>"
+                             $('#{{ journal.name|cut:" " }}').append(
+                                "<h4 class='section' id={{ journal.name|cut:" " }}{{ section.name|cut:" " }}><label>{{ section.name }}</label></h4>"
                             )
                             {% for article in article_list %}
-                                $('#{{ journal|cut:" " }}{{ section|cut:" " }}').append(
+                                $('#{{ journal.name|cut:" " }}{{ section.name|cut:" " }}').append(
                                     "<div class='article' id='{{ article.pk }}'><a href='{{ article.href }}' target='_blank'>{{ article.title }}</a><p class='teaser'>{{ article.teaser }}</p></div>"
                                 )
                                 {% if article.image != 'void' %}
@@ -25,43 +25,18 @@
                                     {% if user.is_authenticated %}
                                         $('#{{ article.pk }}').append(
                                         "<div class='row'><div class='col-md-12 col-sm-12 col-xs-12'>\
-                                        <form action='' method='POST' class='pin_badge' id='pin_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-pushpin' aria-hidden='true'></span></div></button></form>\
-                                        <form class='article_badges'><button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-send' aria-hidden='true'></span></div></button></form>\
-                                        <form class='article_badges'><button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span></div></div></button></form>"
+                                        <form action='' method='POST' class='article_badges' id='pin_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-pushpin' aria-hidden='true'></span></div></button></form>\
+                                        <form action='' method='POST' class='article_badges' id='send_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-send' aria-hidden='true'></span></div></button></form>\
+                                        <form action='' method='POST' class='article_badges' id='like_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span></div></div></button></form>"
                                         )
 
-                                        $(document).on('submit','#pin_form{{ article.pk }}', function(e) {
-                                            e.preventDefault();
-
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '{% url "userprofile:pin" %}',
-                                                data: {
-                                                    journal: '{{ journal }}',
-                                                    section: '{{ section }}',
-                                                    article: {{ article.pk }},
-                                                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                                                },
-                                                success: function showAlert() {
-                                                    $("#alert").show().delay(2000).fadeOut();
-                                                }
-                                            });
-                                        });
+                                        {% include 'harrispierce/shared/badge_form_function.html' %}
 
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
                         {% endfor %}
                     {% endfor %}
-
-
-                    button = $('<button class = "btn btn-primary btn-lg btn-block">Go back to Index</button>');
-                    button.click(function () {
-                      window.location.href='{% url 'index_perso' %}';
-                    });
-                    $('#sticky-list').append(
-                        button
-                    )
 
                 </script>
         </div>
