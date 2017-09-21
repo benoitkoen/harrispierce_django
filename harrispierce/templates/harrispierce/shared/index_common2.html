@@ -11,7 +11,7 @@
                     )
                     {% for section in journal.sections.all %}
                             $('#{{ journal.name|cut:' ' }}').append(
-                                '<input id="{{ journal.name|cut:' ' }}{{ section.name }}" type="checkbox" class="section_cb" name="selection" value="{{journal.pk}}-{{section.pk}}">'
+                                '<input id="{{ journal.name|cut:' ' }}{{ section.name }}" type="checkbox" class="section_cb" name="selection" value="{{journal}}-{{section}}">'
                             )
                             {% if journal.id in choices.journal and section.id in choices.section %}
                                 $('#{{ journal.name|cut:' ' }}{{ section.name }}').attr('checked', true)

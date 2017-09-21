@@ -1,67 +1,54 @@
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from django.core.context_processors import csrf
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views import generic
 
-from .forms import UserProfileForm
+from harrispierce.models import Journal, Section, Article
+from .models import PinnedArticles, LikedArticles
 
 
-
-class ProfileView(generic.FormView):
-
-    template_name = 'userprofile/profile.html'
-
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+class PinView(generic.FormView):
 
     def post(self, request):
-        form = self.form_class(request.POST)
 
-        if form.is_valid():
+        if request.method == 'POST':
 
-            # create an object from the form but does not save it the db yet
-            user = form.save(commit=False)
-
-            #email =
-            user_name = form.cleaned_data['user_name']
-            password = form.cleaned_data['password']
-
-            user.username = user_name
-            user.email = request.POST['email']
-            user.set_password(password)
-            user.save()
-
-            # user exists or not
-            user = authenticate(username=user_name, password=password)
-            if user is not None:
-
-                if user.is_active:
-                    # user signified to system as logged in
-                    login(request, user)
-
-                    return redirect('index_perso')
-
-        return render(request, self.template_name, {'form': form})
-"""
-@login_required
-def user_profile(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('profile')
-        else:
             user = request.user
+            journal_pk = request.POST.get('journal')
+            section_pk = request.POST.get('section')
+            article_pk = request.POST.get('article')
 
-            # trigger Userprofile property in Models
-            profile = user.profile
-            form = UserProfileForm(instance=profile)
+            journal = Journal.objects.get(pk = journal_pk)
+            section = Section.objects.get(pk = section_pk)
+            article = Article.objects.get(pk = article_pk)
 
-        args = {}
-        args.update(csrf(request))
+            PinnedArticles.objects.create(
+                user=user,
+                journal=journal,
+                section=section,
+                article=article
+            )
 
-        args['form'] = form
+        return HttpResponse('')
 
-        return render_to_response('profile.html', args)
-"""
+
+class LikeView(generic.FormView):
+    def post(self, request):
+        if request.method == 'POST':
+            user = request.user
+            journal_pk = request.POST.get('journal')
+            section_pk = request.POST.get('section')
+            article_pk = request.POST.get('article')
+
+            journal = Journal.objects.get(pk=journal_pk)
+            section = Section.objects.get(pk=section_pk)
+            article = Article.objects.get(pk=article_pk)
+
+            LikedArticles.objects.create(
+                user=user,
+                journal=journal,
+                section=section,
+                article=article
+            )
+
+        return HttpResponse('')
