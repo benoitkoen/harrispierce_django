@@ -12,7 +12,10 @@ $(document).on('submit','#pin_form{{ article.pk }}', function(e) {
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function showAlertPin() {
-            $("#alertpin").show().delay(2000).fadeOut();
+            $("#success_pin").show().delay(2000).fadeOut();
+        },
+        error: function showAlertPin() {
+            $("#error_pin").show().delay(2000).fadeOut();
         }
     });
 });
@@ -30,7 +33,10 @@ $(document).on('submit','#like_form{{ article.pk }}', function(e) {
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function showAlertLike() {
-            $("#alertlike").show().delay(2000).fadeOut();
+            $("#success_like").show().delay(2000).fadeOut();
+        },
+        error: function showAlertPin() {
+            $("#error_like").show().delay(2000).fadeOut();
         }
     });
 });
@@ -48,7 +54,10 @@ $(document).on('submit','#like_form_reading_list{{ article.pk }}', function(e) {
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function showAlertLike() {
-            $("#alertlike").show().delay(2000).fadeOut();
+            $("#success_like").show().delay(2000).fadeOut();
+        },
+        error: function showAlertPin() {
+            $("#error_like").show().delay(2000).fadeOut();
         }
     });
 });

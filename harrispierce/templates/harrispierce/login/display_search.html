@@ -7,12 +7,13 @@
             <div id="sticky-list">
                 <script>
                     {% for journal, article_selection in selection_dict.items %}
+                    console.log('{{selection_dict}}')
                         $('#sticky-list').append(
                             "<div class='journal'><h3 class= 'journal_name' id={{ journal|cut:' ' }}><label>{{ journal }}</label></h3></div>"
                         );
                         {% for article in article_selection %}
                             $('#{{ journal|cut:" " }}').append(
-                                "<div class='article'><a href='{{ article.href }}' target='_blank'>{{ article.title }}</a><p class='teaser'>{{ article.pub_date }}<br>{{ article.teaser }}</p><img src = '{{ article.image }}' class='img-responsive' alt='Responsive image'></div>"
+                                "<div class='article'><a href='{{ article.href }}' target='_blank'><u>{{ article.title }}</u></a><p class='teaser'><strong>{{ article.pub_date }}</strong><br>{{ article.teaser }}</p><img src = '{{ article.image }}' class='img-responsive' alt='Responsive image'></div>"
                             )
                         {% endfor %}
                     {% endfor %}
@@ -28,6 +29,4 @@
         </div>
     </div>
 </div>
-<button id = "go_back" onclick="window.location.href='{% url 'index_perso' %}'">Go back to Index</button><br>
-<button id = "login" onclick="window.location.href='{% url 'display_perso' %}'">Go back to Selection</button><br>
 {% endblock %}
