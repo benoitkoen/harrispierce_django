@@ -1,0 +1,20 @@
+
+$(document).on('submit','#follow_form', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "userprofile:follow" %}',
+        data: {
+            user_to_follow: $("#username_to_follow").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function showAlertLike() {
+            $("#success_follow").show().delay(2000).fadeOut();
+        },
+        error: function showAlertLike() {
+            $("#error_follow").show().delay(2000).fadeOut();
+        }
+    });
+});
+

@@ -186,6 +186,9 @@ div.article {
 }
 
 
+
+
+
 /* popup windows */
 
 .popup{
@@ -213,21 +216,11 @@ div.article {
 
 /* alert */
 
-#alertpin {
+#success_pin, #success_like, #success_follow, #error_follow, #error_like, #error_pin {
     position:fixed;
     display: None;
     top: 50%;
     z-index: 999;
     text-align: center;
     width: 100%;
-
-}
-#alertlike {
-    position:fixed;
-    display: None;
-    top: 50%;
-    z-index: 999;
-    text-align: center;
-    width: 100%;
-
 }

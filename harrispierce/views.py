@@ -17,7 +17,9 @@ from .views_functions import index_get, display_get, display_search
 
 
 class NewUserView(generic.FormView):
-
+    """
+    A view that creates a new user.
+    """
     form_class = NewUserForm
     template_name = 'harrispierce/new_user/new_user.html'
     success_url = reverse_lazy('index_perso')
@@ -57,12 +59,17 @@ class NewUserView(generic.FormView):
 
 
 class ThanksView(generic.ListView):
+    """
+    A view that displays a thank you message to user who just signed up.
+    """
     template_name = 'harrispierce/new_user/thanks.html'
     success_url = reverse_lazy('thanks')
 
 
 class LoginView(generic.FormView):
-
+    """
+    A view that enables a user to login.
+    """
     form_class = LoginForm
     template_name = 'harrispierce/login/login.html'
     success_url = reverse_lazy('index_perso')
@@ -89,13 +96,18 @@ class LoginView(generic.FormView):
 
 
 class LogoutView(generic.RedirectView):
-
+    """
+    A view that enables a user to logout.
+    """
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('index'))
 
 
-class IndexView(generic.ListView):   # ListView
+class IndexView(generic.ListView):
+    """
+    A view that displays the journals and sections to choose from by checking the right checkboxes.
+    """
     template_name = 'harrispierce/index.html'
 
     def get(self, request, **kwargs):
@@ -104,6 +116,9 @@ class IndexView(generic.ListView):   # ListView
 
 
 class DisplayView(generic.ListView):
+    """
+    A view that displays the articles according to the journals and sections choice.
+    """
     template_name = 'harrispierce/display.html'
 
     def get(self, request, **kwargs):
@@ -121,6 +136,9 @@ class DisplayView(generic.ListView):
 
 
 class IndexPersoView(LoginRequiredMixin, generic.ListView):
+    """
+    A view that displays the journals and sections to choose from by checking the right checkboxes for a loggedin user.
+    """
     template_name = 'harrispierce/login/index_perso.html'
 
     def get(self, request, **kwargs):
@@ -133,6 +151,9 @@ class IndexPersoView(LoginRequiredMixin, generic.ListView):
 
 
 class DisplayPersoView(LoginRequiredMixin, generic.ListView):
+    """
+    A view that displays the articles according to the journals and sections choice for a loggedin user.
+    """
     template_name = 'harrispierce/login/display_perso.html'
 
     def get(self, request, **kwargs):
@@ -149,12 +170,18 @@ class DisplayPersoView(LoginRequiredMixin, generic.ListView):
 
 
 class SearchFormView(generic.FormView):
+    """
+    A view that displays a search form to retrieve relevant articles for a loggedin user.
+    """
     form_class = SearchForm
     template_name = 'harrispierce/login/search_form.html'
     success_url = reverse_lazy('display_search')
 
 
 class DisplaySearchView(generic.ListView):
+    """
+    A view that displays the relevant articles according to the input of the search form for a loggedin user.
+    """
     form_class = SearchForm
     template_name = 'harrispierce/login/display_search.html'
 
@@ -168,7 +195,6 @@ class DisplaySearchView(generic.ListView):
             quantity = int(form['Quantity'].value())
 
             args = display_search(keyword, sources, date, quantity)
-            print(args)
 
             return render(request, self.template_name, args)
 

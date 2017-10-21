@@ -10,6 +10,9 @@ from datetime import datetime, timedelta
 
 
 class Section(models.Model):
+    """
+    A model that records the available sections per journal.
+    """
     name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -17,6 +20,9 @@ class Section(models.Model):
 
 
 class Journal(models.Model):
+    """
+    A model that records the available journals.
+    """
     sections = models.ManyToManyField(Section)
     name = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
@@ -29,6 +35,9 @@ class Journal(models.Model):
 
 
 class Article(models.Model):
+    """
+    A model that records the available articles per section and per journal.
+    """
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     title = models.CharField(max_length=300, null=False, unique=True)

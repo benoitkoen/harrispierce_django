@@ -1,13 +1,24 @@
+{% extends 'harrispierce/shared/base_loggedin.html' %}
 
-<div id="profile" class="popup">
-    <a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
-    <h3>Profile</h3>
-    <hr>
-    <label>Username: </label>
-    {{request.user.username}}
-    <br>
-    <label>Password: </label>
-    <hr>
-    <input class="btn btn-primary" type="submit" value="Login"/>
-    <input class="btn btn-secondary" data-dismiss="modal" type="submit" value="Cancel"/>
-</div>
+{%block blockname %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <h2>People you follow</h2>
+                <ul id="following_list">
+                    <script>
+                    {% for friends_followed in following %}
+                        $('#following_list').append(
+                            "<li class='following'>oj</li>"
+                        )
+                    {% endfor %}
+                    </script>
+                </ul>
+            </div>
+            <div class="col-xs-6">
+                <h2>Your followers</h2>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

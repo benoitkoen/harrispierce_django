@@ -1,6 +1,9 @@
 
-<div id="alertlike" class="alert alert-success" role="alert"><strong>Your followers will surely check what you like!<strong></div>
-<div id="alertpin" class="alert alert-success" role="alert"><strong>Saved to your reading list.<strong></div>
+<div id="success_like" class="alert alert-success" role="alert"><strong>Your followers will surely check what you like!</strong></div>
+<div id="success_pin" class="alert alert-success" role="alert"><strong>Saved to your reading list.</strong></div>
+<div id="error_like" class="alert alert-warning" role="alert"><strong>You already liked that article.</strong></div>
+<div id="error_pin" class="alert alert-warning" role="alert"><strong>Already saved to your reading list.</strong></div>
+
 <div class="container-fluid">
     <h2 id="selection">Your Selection</h2>
         <div class="row" >
@@ -16,7 +19,7 @@
                             )
                             {% for article in article_list %}
                                 $('#{{ journal.name|cut:" " }}{{ section.name|cut:" " }}').append(
-                                    "<div class='article' id='{{ article.pk }}'><a href='{{ article.href }}' target='_blank'>{{ article.title }}</a><p class='teaser'>{{ article.teaser }}</p></div>"
+                                    "<div class='article' id='{{ article.pk }}'><a href='{{ article.href }}' target='_blank'><u>{{ article.title }}</u></a><p class='teaser'>{{ article.teaser }}</p></div>"
                                 )
                                 {% if article.image != 'void' %}
                                     $('#{{ article.pk }}').append(
