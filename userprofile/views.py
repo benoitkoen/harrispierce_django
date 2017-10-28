@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, loader, redirect
 
 from harrispierce.models import Journal, Section, Article
-from .models import PinnedArticles, LikedArticles, Following
+from .models import PinnedArticles, LikedArticles, SentArticles, Following
 from .views_functions import profile_get
 
 
@@ -55,6 +55,42 @@ class LikeView(generic.FormView):
 
             LikedArticles.objects.create(
                 user=user,
+                journal=journal,
+                section=section,
+                article=article
+            )
+
+        return HttpResponse('')
+
+
+class SendView(generic.FormView):
+    """
+    A view that creates a LikedArticles object when a user clicks on the like badge under each article displayed.
+    """
+
+    def post(self, request):
+        print('#####################################')
+        if request.method == 'POST':
+            sender = request.user
+            recipient_name = request.POST.get('recipient')
+            journal_pk = request.POST.get('journal')
+            section_pk = request.POST.get('section')
+            article_pk = request.POST.get('article')
+
+            print('jdnksjdnckjds', recipient_name, journal_pk, article_pk, sender)
+
+            recipient = User.objects.get(username=recipient_name)
+            journal = Journal.objects.get(pk=journal_pk)
+            section = Section.objects.get(pk=section_pk)
+            article = Article.objects.get(pk=article_pk)
+
+            if True:
+                # make sur they are friends!
+                pass
+
+            SentArticles.objects.create(
+                sender=sender,
+                recipient=recipient,
                 journal=journal,
                 section=section,
                 article=article

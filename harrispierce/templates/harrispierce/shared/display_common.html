@@ -1,8 +1,10 @@
 
 <div id="success_like" class="alert alert-success" role="alert"><strong>Your followers will surely check what you like!</strong></div>
-<div id="success_pin" class="alert alert-success" role="alert"><strong>Saved to your reading list.</strong></div>
 <div id="error_like" class="alert alert-warning" role="alert"><strong>You already liked that article.</strong></div>
+<div id="success_pin" class="alert alert-success" role="alert"><strong>Saved to your reading list.</strong></div>
 <div id="error_pin" class="alert alert-warning" role="alert"><strong>Already saved to your reading list.</strong></div>
+<div id="success_send" class="alert alert-success" role="alert"><strong>Sent!</strong></div>
+<div id="error_send" class="alert alert-warning" role="alert"><strong>Could not send!</strong></div>
 
 <div class="container-fluid">
     <h2 id="selection">Your Selection</h2>
@@ -27,10 +29,33 @@
                                     )
                                     {% if user.is_authenticated %}
                                         $('#{{ article.pk }}').append(
-                                        "<div class='row'><div class='col-md-12 col-sm-12 col-xs-12'>\
-                                        <form action='' method='POST' class='article_badges' id='pin_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-pushpin' aria-hidden='true'></span></div></button></form>\
-                                        <form action='' method='POST' class='article_badges' id='send_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-send' aria-hidden='true'></span></div></button></form>\
-                                        <form action='' method='POST' class='article_badges' id='like_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span></div></div></button></form>"
+                                            "<div class='row'><div class='col-md-12 col-sm-12 col-xs-12'>"+
+                                                "<div class='article_badges'><form action='' method='POST' id='pin_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-pushpin' aria-hidden='true'></span></div></button></form></div>"+
+                                                "<div class='article_badges'><form action='' method='POST' id='like_form{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span></div></button></form></div>"+
+                                                "<div class='article_badges'><a href='' data-toggle='modal' data-target='#send_popup{{ article.pk }}'><button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-send' aria-hidden='true'></span></div></button></a></div>"+
+                                            "</div></div>"+
+                                            "<div class='modal fade' id='send_popup{{ article.pk }}' role='dialog'>"+
+                                                "<div class='modal-dialog'>"+
+                                                    "<div class='modal-content'>"+
+                                                        "<div class='form-group'>"+
+                                                            "<form action='' class='popup' id='send_form{{ article.pk }}' method='POST'>{% csrf_token %}"+
+                                                                "<a href='#' class='close' data-dismiss='modal' aria-label='close'>&times;</a>"+
+                                                                "<h1>Send an article to a friend</h1>"+
+                                                                "<p><i>Remember, you must follow and be followed back to make a friend.</i></p>"+
+                                                                "<hr>"+
+                                                                "<h3>{{ article.title }}</h3><img src = '{{ article.image }}' class='img-responsive' alt='Responsive image'>"+
+                                                                "<hr>"+
+                                                                "<label>Recipient: </label>"+
+                                                                "<input type='text' class='form-control' id='recipient' placeholder='Enter a username'>"+
+                                                                "<br>"+
+                                                                "<input class='btn btn-primary' type='submit' value='Send'/>"+
+                                                                "<input class='btn btn-secondary' data-dismiss='modal' type='submit' value='Cancel'/>"+
+                                                            "</form>"+
+                                                        "</div>"+
+                                                        "</div>"+
+                                                    "</div>"+
+                                                "</div>"+
+                                            "</div>"
                                         )
 
                                         {% include 'harrispierce/shared/badge_form_function.html' %}
@@ -42,6 +67,8 @@
                     {% endfor %}
 
                 </script>
+
+
         </div>
     </div>
 </div>

@@ -1,0 +1,14 @@
+
+<div class="form-group">
+    <form action="" class="popup" id="send_form" method="POST">{% csrf_token %}
+        <a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
+        <h3>Send an article to a friend</h3>
+        <p><i>Remember, you must follow and be followed back to make a friend.</i></p>
+        <hr>
+        <label>Recipient: </label>
+        <input type="text" class="form-control" id="recipient" placeholder="Enter a username">
+        <hr>
+        <input class="btn btn-primary" type="submit" value="Send"/>
+        <input class="btn btn-secondary" data-dismiss="modal" type="submit" value="Cancel"/>
+    </form>
+</div>

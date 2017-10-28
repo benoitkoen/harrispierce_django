@@ -175,9 +175,9 @@ div.article {
 
 .article_badges{
     display: inline-block;
-}
-.pin_badge{
-    display: inline-block;
+    margin-top: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .badge_button{
@@ -216,11 +216,11 @@ div.article {
 
 /* alert */
 
-#success_pin, #success_like, #success_follow, #error_follow, #error_like, #error_pin {
+#success_pin, #success_like, #success_follow, #success_send, #error_follow, #error_like, #error_pin, #error_send {
     position:fixed;
     display: None;
     top: 50%;
-    z-index: 999;
+    z-index: 99999;
     text-align: center;
     width: 100%;
 }

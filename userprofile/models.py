@@ -47,11 +47,26 @@ class LikedArticles(models.Model):
     liked_date = models.DateTimeField(auto_now_add=True)
 
 
+class SentArticles(models.Model):
+    """
+    A model that records the articles that have been sent by the user to a friend.
+    """
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    article = models.OneToOneField(Article, on_delete=models.CASCADE)
+    sent_date = models.DateTimeField(auto_now_add=True)
+
+
 class Following(models.Model):
     """
     A model that records the follow-followed relationships between users.
     """
     user_followed = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_followed')
     follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='follower')
+
+    class Meta:
+        unique_together = ('user_followed', 'follower')
 
 
