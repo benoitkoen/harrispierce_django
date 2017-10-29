@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.views import generic
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, loader, redirect
@@ -77,16 +79,17 @@ class SendView(generic.FormView):
             section_pk = request.POST.get('section')
             article_pk = request.POST.get('article')
 
-            print('jdnksjdnckjds', recipient_name, journal_pk, article_pk, sender)
+            print('WTFFFFFFFFF?', recipient_name, journal_pk)
 
             recipient = User.objects.get(username=recipient_name)
+            #recipient = User.objects.get(username='ben2')
             journal = Journal.objects.get(pk=journal_pk)
             section = Section.objects.get(pk=section_pk)
             article = Article.objects.get(pk=article_pk)
 
-            if True:
-                # make sur they are friends!
-                pass
+            # throws a 500 error if either one of the relation is not found
+            one_way_relation = Following.objects.get(follower_id=recipient.pk, user_followed_id=sender.pk)
+            reciprocal_relation = Following.objects.get(follower_id=sender.pk, user_followed_id=recipient.pk)
 
             SentArticles.objects.create(
                 sender=sender,
@@ -118,9 +121,9 @@ class FollowView(generic.FormView):
         return HttpResponse('')
 
 
-class ProfileView(generic.FormView):
+class ProfileView(LoginRequiredMixin, generic.ListView):
     """
-    A view that displays the articles according to the journals and sections choice for a loggedin user.
+    A view that displays the profile information for a loggedin user.
     """
     template_name = 'userprofile/profile.html'
 

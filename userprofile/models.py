@@ -55,8 +55,11 @@ class SentArticles(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    article = models.OneToOneField(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     sent_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('sender', 'article')
 
 
 class Following(models.Model):

@@ -1,4 +1,6 @@
-from .models import Following
+from itertools import chain
+
+from .models import Following, User
 
 
 def profile_get(user):
@@ -21,9 +23,13 @@ def profile_get(user):
     except Following.DoesNotExist:
         following = None
 
-    print('FOLLWO: ', followers)
-    print('fofofo: ', following)
+    followers_name = User.objects.filter(id__in=followers.values('follower_id')).values('username')
+    following_name = User.objects.filter(id__in=following.values('user_followed_id')).values('username')
 
-    args = {'followers': followers, 'following': following}
+    #friends = Following.objects.filter(follower_id__in=following.values('user_followed_id'))
+    #friends_name = User.objects.filter(id__in=friends.values('user_followed_id'))
+    friends_name = followers_name & following_name
+
+    args = {'followers': followers_name, 'following': following_name, 'friends': friends_name}
 
     return args
