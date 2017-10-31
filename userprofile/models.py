@@ -23,6 +23,7 @@ class Choice(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     choice_date = models.DateTimeField(auto_now_add=True)
 
+
 class PinnedArticles(models.Model):
     """
     A model that records the articles that have been pinned by the user for later reading.
@@ -30,7 +31,6 @@ class PinnedArticles(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    #article = models.ForeignKey(Article, on_delete=models.CASCADE, unique=True)
     article = models.OneToOneField(Article, on_delete=models.CASCADE)
     pinned_date = models.DateTimeField(auto_now_add=True)
 
@@ -42,7 +42,6 @@ class LikedArticles(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    #article = models.ForeignKey(Article, on_delete=models.CASCADE, unique=True)
     article = models.OneToOneField(Article, on_delete=models.CASCADE)
     liked_date = models.DateTimeField(auto_now_add=True)
 
@@ -59,7 +58,7 @@ class SentArticles(models.Model):
     sent_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('sender', 'article')
+        unique_together = ('sender', 'article', 'recipient')
 
 
 class Following(models.Model):

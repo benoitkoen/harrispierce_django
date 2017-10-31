@@ -5,6 +5,8 @@
 <div id="error_pin" class="alert alert-warning" role="alert"><strong>Already saved to your reading list.</strong></div>
 <div id="success_send" class="alert alert-success" role="alert"><strong>Article sent!</strong></div>
 <div id="error_send" class="alert alert-warning" role="alert"><strong>Could not send the article!</strong></div>
+<div id="success_remove" class="alert alert-success" role="alert"><strong>Article removed from your reading list!</strong></div>
+<div id="error_remove" class="alert alert-warning" role="alert"><strong>Could not remove the article!</strong></div>
 
 <div class="container-fluid">
     <h2 id="selection">Your Selection</h2>
@@ -47,6 +49,9 @@
                                                                 "<hr>"+
                                                                 "<label>Recipient: </label>"+
                                                                 "<input type='text' class='form-control' id='recipient' placeholder='Enter a username'>"+
+                                                                "<br>"+
+                                                                "<label for='comment'>Comment:</label>"+
+                                                                "<textarea class='form-control' rows='5' id='comment' placeholder='I thought that article might interest you because...'></textarea>"+
                                                                 "<br>"+
                                                                 "<input class='btn btn-primary' type='submit' id='send{{ article.pk }}' value='Send'/>"+
                                                                 "<input class='btn btn-secondary' data-dismiss='modal' type='submit' value='Cancel'/>"+

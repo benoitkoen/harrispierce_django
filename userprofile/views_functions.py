@@ -26,8 +26,6 @@ def profile_get(user):
     followers_name = User.objects.filter(id__in=followers.values('follower_id')).values('username')
     following_name = User.objects.filter(id__in=following.values('user_followed_id')).values('username')
 
-    #friends = Following.objects.filter(follower_id__in=following.values('user_followed_id'))
-    #friends_name = User.objects.filter(id__in=friends.values('user_followed_id'))
     friends_name = followers_name & following_name
 
     args = {'followers': followers_name, 'following': following_name, 'friends': friends_name}

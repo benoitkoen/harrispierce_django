@@ -180,7 +180,7 @@ div.article {
     margin-right: 2px;
 }
 
-.badge_button{
+.badge_button {
     outline: none;
     padding: 0px;
 }
@@ -216,11 +216,11 @@ div.article {
 
 /* alert */
 
-#success_pin, #success_like, #success_follow, #success_send, #error_follow, #error_like, #error_pin, #error_send {
+#success_pin, #success_like, #success_follow, #success_send, #error_follow, #error_like, #error_pin, #error_send, #success_remove, #error_remove {
     position:fixed;
     display: None;
     top: 50%;
     z-index: 99999;
     text-align: center;
-    width: 100%;
+    width: 100000px;
 }

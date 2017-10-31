@@ -55,12 +55,35 @@ class LikeView(generic.FormView):
             section = Section.objects.get(pk=section_pk)
             article = Article.objects.get(pk=article_pk)
 
+            print('IN LIKE VIEW  ', user, journal_pk, section_pk, article_pk)
+
             LikedArticles.objects.create(
                 user=user,
                 journal=journal,
                 section=section,
                 article=article
             )
+
+        return HttpResponse('')
+
+
+class RemoveView(generic.FormView):
+    """
+    A view that creates a LikedArticles object when a user clicks on the like badge under each article displayed.
+    """
+
+    def post(self, request):
+        if request.method == 'POST':
+            user = request.user
+            article_pk = request.POST.get('article')
+
+            print('IN REMOVE VIEW  ', user.pk, article_pk)
+
+
+            PinnedArticles.objects.get(
+                article_id=article_pk,
+                user_id=user.pk
+            ).delete()
 
         return HttpResponse('')
 
@@ -82,7 +105,6 @@ class SendView(generic.FormView):
             print('WTFFFFFFFFF?', recipient_name, journal_pk)
 
             recipient = User.objects.get(username=recipient_name)
-            #recipient = User.objects.get(username='ben2')
             journal = Journal.objects.get(pk=journal_pk)
             section = Section.objects.get(pk=section_pk)
             article = Article.objects.get(pk=article_pk)
