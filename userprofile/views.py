@@ -47,15 +47,14 @@ class LikeView(generic.FormView):
     def post(self, request):
         if request.method == 'POST':
             user = request.user
-            journal_pk = request.POST.get('journal')
-            section_pk = request.POST.get('section')
             article_pk = request.POST.get('article')
 
-            journal = Journal.objects.get(pk=journal_pk)
-            section = Section.objects.get(pk=section_pk)
             article = Article.objects.get(pk=article_pk)
 
-            print('IN LIKE VIEW  ', user, journal_pk, section_pk, article_pk)
+            journal = article.journal
+            section = article.section
+
+            print('IN LIKE VIEW  ', user, journal.pk, section.pk, article_pk)
 
             LikedArticles.objects.create(
                 user=user,
@@ -77,7 +76,7 @@ class RemoveView(generic.FormView):
             user = request.user
             article_pk = request.POST.get('article')
 
-            print('IN REMOVE VIEW  ', user.pk, article_pk)
+            print('IN REMOVE VIEW', user.pk, article_pk)
 
 
             PinnedArticles.objects.get(

@@ -10,7 +10,7 @@
                             <script>
                                 {% for article in pinned_articles %}
                                     $('#pinned_articles_list').append(
-                                        "<li class='DocumentItem' id='pin{{ article.pk }}'><a href='{{ article.href }}' target='_blank'>{{ article.title }}</a><p class='teaser'>{{ article.teaser }}</p></li>"
+                                        "<li class='DocumentItem' id='pin{{ article.pk }}'><a href='{{ article.href }}' target='_blank'><u><strong>{{ article.title }}</u></strong></a><p class='teaser'>{{ article.teaser }}</p></li>"
                                     )
                                     {% if article.image != 'void' %}
                                         $('#pin{{ article.pk }}').append(
@@ -21,27 +21,27 @@
                                     $('#pin{{ article.pk }}').append(
                                         "<div class='row'><div class='col-md-12 col-sm-12 col-xs-12'>"+
                                         "<div class='article_badges'><form action='' method='POST' id='like_form_reading_list{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span></div></button></form></div>"+
-                                        "<div class='article_badges'><a href='' data-toggle='modal' data-target='#send_popup{{ article.pk }}'><button type='button' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-send' aria-hidden='true'></span></div></button></a></div>"+
-                                        "<div class='article_badges'><form action='' method='POST' id='remove_form_reading_list{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></div></button></a></div>"+
+                                        "<div class='article_badges'><a href='' data-toggle='modal' data-target='#send_popup_reading_list{{ article.pk }}'><button type='button' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-send' aria-hidden='true'></span></div></button></a></div>"+
+                                        "<div class='article_badges'><form action='' method='POST' id='remove_form_reading_list{{ article.pk }}'>{% csrf_token %}<button type='submit' class='badge_button'><div class='badge'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></div></button></form></div>"+
                                         "</div></div>"+
                                             "<div class='modal fade' id='send_popup_reading_list{{ article.pk }}' role='dialog'>"+
                                                 "<div class='modal-dialog'>"+
                                                     "<div class='modal-content'>"+
                                                         "<div class='form-group'>"+
-                                                            "<form action='' class='popup' id='send_form{{ article.pk }}' method='POST'>{% csrf_token %}"+
+                                                            "<form action='' class='popup' id='send_form_reading_list{{ article.pk }}' method='POST'>{% csrf_token %}"+
                                                                 "<a href='#' class='close' data-dismiss='modal' aria-label='close'>&times;</a>"+
                                                                 "<h1>Send an article to a friend</h1>"+
                                                                 "<p><i>Remember, you must follow and be followed back to make a friend.</i></p>"+
                                                                 "<hr>"+
-                                                                "<h3>{{ article.title }}</h3><img src = '{{ article.image }}' class='img-responsive' alt='Responsive image'>"+
+                                                                "<div class='article_content'><h3>{{ article.title }}</h3><img src = '{{ article.image }}' class='img-responsive' alt='Responsive image'></div>"+
                                                                 "<hr>"+
-                                                                "<label>Recipient: </label>"+
-                                                                "<input type='text' class='form-control' id='recipient' placeholder='Enter a username'>"+
+                                                                "<label for='recipient_reading_list'>Recipient: </label>"+
+                                                                "<input type='text' class='col-3 form-control' id='recipient_reading_list{{ article.pk }}' placeholder='Enter a username'>"+
                                                                 "<br>"+
-                                                                "<label for='comment'>Comment:</label>"+
-                                                                "<textarea class='form-control' rows='5' id='comment' placeholder='I thought that article might interest you because...'></textarea>"+
+                                                                "<label for='comment_reading_list'>Comment:</label>"+
+                                                                "<textarea class='form-control' rows='5' id='comment_reading_list' placeholder='I thought that article might interest you because...'></textarea>"+
                                                                 "<br>"+
-                                                                "<input class='btn btn-primary' type='submit' id='send{{ article.pk }}' value='Send'/>"+
+                                                                "<input class='btn btn-primary' type='button' id='send_reading_list{{ article.pk }}' value='Send'/>"+
                                                                 "<input class='btn btn-secondary' data-dismiss='modal' type='submit' value='Cancel'/>"+
                                                             "</form>"+
                                                         "</div>"+
