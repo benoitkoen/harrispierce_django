@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, render, loader, redirect
 
 from harrispierce.models import Journal, Section, Article
 from .models import PinnedArticles, LikedArticles, SentArticles, Following
-from .views_functions import profile_get
+from .views_functions import profile_get, recommended_get
 
 
 class PinView(generic.FormView):
@@ -21,18 +21,12 @@ class PinView(generic.FormView):
         if request.method == 'POST':
 
             user = request.user
-            journal_pk = request.POST.get('journal')
-            section_pk = request.POST.get('section')
             article_pk = request.POST.get('article')
 
-            journal = Journal.objects.get(pk = journal_pk)
-            section = Section.objects.get(pk = section_pk)
             article = Article.objects.get(pk = article_pk)
 
             PinnedArticles.objects.create(
                 user=user,
-                journal=journal,
-                section=section,
                 article=article
             )
 
@@ -58,8 +52,6 @@ class LikeView(generic.FormView):
 
             LikedArticles.objects.create(
                 user=user,
-                journal=journal,
-                section=section,
                 article=article
             )
 
@@ -97,26 +89,23 @@ class SendView(generic.FormView):
         if request.method == 'POST':
             sender = request.user
             recipient_name = request.POST.get('recipient')
-            journal_pk = request.POST.get('journal')
-            section_pk = request.POST.get('section')
+            comment = request.POST.get('comment')
             article_pk = request.POST.get('article')
 
-            print('WTFFFFFFFFF?', recipient_name, journal_pk)
+            print('Trying to SEND:', recipient_name, article_pk, comment)
 
             recipient = User.objects.get(username=recipient_name)
-            journal = Journal.objects.get(pk=journal_pk)
-            section = Section.objects.get(pk=section_pk)
+
             article = Article.objects.get(pk=article_pk)
 
-            # throws a 500 error if either one of the relation is not found
+            # throws a 500 error if either one of the relations is not found
             one_way_relation = Following.objects.get(follower_id=recipient.pk, user_followed_id=sender.pk)
             reciprocal_relation = Following.objects.get(follower_id=sender.pk, user_followed_id=recipient.pk)
 
             SentArticles.objects.create(
                 sender=sender,
                 recipient=recipient,
-                journal=journal,
-                section=section,
+                comment = comment,
                 article=article
             )
 
@@ -134,10 +123,15 @@ class FollowView(generic.FormView):
 
             user_to_follow = User.objects.get(username=user_to_follow)
 
-            Following.objects.create(
-                user_followed=user_to_follow,
-                follower=user,
-            )
+            # can't follow yourself
+            if user != user_to_follow:
+                Following.objects.create(
+                    user_followed=user_to_follow,
+                    follower=user,
+                )
+
+            else:
+                raise ValueError('You cannot follow yourself.')
 
         return HttpResponse('')
 
@@ -151,5 +145,18 @@ class ProfileView(LoginRequiredMixin, generic.ListView):
     def get(self, request, **kwargs):
         user = request.user
         args = profile_get(user)
+
+        return render(request, self.template_name, args)
+
+
+class RecommendedView(LoginRequiredMixin, generic.ListView):
+    """
+    A view that displays the articles recommended by a friend for a loggedin user.
+    """
+    template_name = 'userprofile/recommended.html'
+
+    def get(self, request, **kwargs):
+        user = request.user
+        args = recommended_get(user)
 
         return render(request, self.template_name, args)
