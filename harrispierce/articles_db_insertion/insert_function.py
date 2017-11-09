@@ -1,14 +1,48 @@
 #!/usr/bin/python
-from datetime import datetime
-import psycopg2
-import django
+from ..models import Article, Journal, Section
 
 
-def insert_article(conn, df):
+def insert_article(df):
 
     if df is None:
         return
 
+    for i in range(len(df)):
+
+        print('Inserting...')
+
+        article = df.ix[i, 'article']
+        cleaned_article = df.ix[i, 'cleaned_article']
+        href = df.ix[i, 'href']
+        image = df.ix[i, 'image']
+        journal = df.ix[i, 'journal']
+        section = df.ix[i, 'section']
+        teaser = df.ix[i, 'teaser']
+        title = df.ix[i, 'title']
+
+    journal = Journal.objects.get(name=journal)
+    section = Section.objects.get(name=section)
+
+    Article.objects.create(
+        article=article,
+        cleaned_article=cleaned_article,
+        href=href,
+        image=image,
+        teaser=teaser,
+        title=title,
+        journal=journal.id,
+        section=section.id,
+    )
+
+    """
+from datetime import datetime
+import psycopg2
+ 
+def insert_article(conn, df):
+
+    if df is None:
+        return
+        
     conn.autocommit = True
     cur = conn.cursor()
 
@@ -54,3 +88,4 @@ def insert_article(conn, df):
                      journal_id,
                      section_id
                      ))
+    """

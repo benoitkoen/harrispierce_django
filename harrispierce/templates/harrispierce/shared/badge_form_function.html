@@ -48,8 +48,6 @@ $(document).on('submit','#like_form_reading_list{{ article.pk }}', function(e) {
         type: 'POST',
         url: '{% url "userprofile:like" %}',
         data: {
-            journal: '{{ journal.pk }}',
-            section: '{{ section.pk }}',
             article: '{{ article.pk }}',
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
@@ -58,6 +56,72 @@ $(document).on('submit','#like_form_reading_list{{ article.pk }}', function(e) {
         },
         error: function showAlertPin() {
             $("#error_like").show().delay(2000).fadeOut();
+        }
+    });
+});
+
+
+$(document).on('click','#send{{ article.pk }}', function(e) {
+    e.preventDefault();
+
+    console.log('cdhjsbsdjh', $('#comment{{ article.pk }}').val())
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "userprofile:send_form" %}',
+        data: {
+            recipient: $('#recipient{{ article.pk }}').val(),
+            comment: $('#comment{{ article.pk }}').val(),
+            article: '{{ article.pk }}',
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function showAlertLike() {
+            $('#success_send').show().delay(2000).fadeOut();
+        },
+        error: function showAlertPin() {
+            $("#error_send").show().delay(2000).fadeOut();
+        }
+    });
+});
+
+$(document).on('click','#send_reading_list{{ article.pk }}', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "userprofile:send_form" %}',
+        data: {
+            recipient: $('#recipient_reading_list{{ article.pk }}').val(),
+            comment: $('#comment_reading_list{{ article.pk }}').val(),
+            article: '{{ article.pk }}',
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function showAlertLike() {
+            $('#success_send').show().delay(2000).fadeOut();
+        },
+        error: function showAlertPin() {
+            $('#error_send').show().delay(2000).fadeOut();
+        }
+    });
+});
+
+$(document).on('submit','#remove_form_reading_list{{ article.pk }}', function(e) {
+    e.preventDefault();
+
+    $('#pin{{ article.pk }}').hide();
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "userprofile:remove_form" %}',
+        data: {
+            article: '{{ article.pk }}',
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function showAlertLike() {
+            $("#success_remove").show().delay(2000).fadeOut();
+        },
+        error: function showAlertPin() {
+            $("#error_remove").show().delay(2000).fadeOut();
         }
     });
 });

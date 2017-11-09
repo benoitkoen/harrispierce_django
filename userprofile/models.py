@@ -23,14 +23,12 @@ class Choice(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     choice_date = models.DateTimeField(auto_now_add=True)
 
+
 class PinnedArticles(models.Model):
     """
     A model that records the articles that have been pinned by the user for later reading.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    #article = models.ForeignKey(Article, on_delete=models.CASCADE, unique=True)
     article = models.OneToOneField(Article, on_delete=models.CASCADE)
     pinned_date = models.DateTimeField(auto_now_add=True)
 
@@ -40,11 +38,22 @@ class LikedArticles(models.Model):
     A model that records the articles that have been liked by the user.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    #article = models.ForeignKey(Article, on_delete=models.CASCADE, unique=True)
     article = models.OneToOneField(Article, on_delete=models.CASCADE)
     liked_date = models.DateTimeField(auto_now_add=True)
+
+
+class SentArticles(models.Model):
+    """
+    A model that records the articles that have been sent by the user to a friend.
+    """
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    comment = models.TextField(default='')
+    sent_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('sender', 'article', 'recipient')
 
 
 class Following(models.Model):
@@ -53,5 +62,8 @@ class Following(models.Model):
     """
     user_followed = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_followed')
     follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='follower')
+
+    class Meta:
+        unique_together = ('user_followed', 'follower')
 
 
