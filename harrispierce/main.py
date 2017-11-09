@@ -1,20 +1,20 @@
-import psycopg2
+#import psycopg2
 
 from harrispierceDjango.settings.local import DATABASES
 
-from harrispierce.inserting.insert_function import insert_article
-from harrispierce.inserting.check_data import retrieve_data
+from harrispierce.articles_db_insertion.insert_function import insert_article
+from harrispierce.articles_db_insertion.check_data import retrieve_data
 from harrispierce.scrapping.scrap_urls import journals
 from harrispierce.scrapping.scrap import scrap
 from harrispierce.scrapping.scrap_articles import FTScrapingMachine
 from harrispierce.util.config import ScrappingConfig
 
-hostname = ''
-username = DATABASES['default']['USER']  # 'postgres'
-password = ''
-database = DATABASES['default']['NAME']  # 'postgres'
+#hostname = ''
+#username = DATABASES['default']['USER']  # 'postgres'
+#password = ''
+#database = DATABASES['default']['NAME']  # 'postgres'
 
-myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
+#myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
 
 if __name__ == '__main__':
 
@@ -24,12 +24,12 @@ if __name__ == '__main__':
     all_scrappers['Financial Times'] = FTScrapingMachine()
     all_scrappers['Les Echos'] = None
 
-    ScrappingConfig.scrap_article_boolean = True
+    ScrappingConfig.scrap_article_boolean = False
 
     for journal, urls in sorted(journals.items()):
         for section, url in urls.items():
             print('inserting for: ', '\n', journal, '\n', section, '\n', url, '\n', all_scrappers[journal])
-            insert_article(myConnection, scrap(scrapper=all_scrappers[journal], journal=journal, section=section, url=url))
+            insert_article(scrap(scrapper=all_scrappers[journal], journal=journal, section=section, url=url))
     """
     """
     """

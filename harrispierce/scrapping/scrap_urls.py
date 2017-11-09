@@ -35,10 +35,12 @@ lesEchosUrls = {
 }
 
 
-journals = {'Wall Street Journal': WSJUrls,
-            'New York Times': NYTUrls,
-            'Financial Times': FTUrls,
-            'Les Echos': lesEchosUrls}
+journals = {
+    'Financial Times': FTUrls,
+    'Wall Street Journal': WSJUrls,
+    'New York Times': NYTUrls,
+    'Les Echos': lesEchosUrls
+}
 
 
 journalPrimaryKeys = {

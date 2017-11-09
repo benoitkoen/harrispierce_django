@@ -2,7 +2,7 @@ import psycopg2
 
 from harrispierce.scrapping.scrap_urls import journals
 from harrispierce.scrapping.scrap import scrap
-from harrispierce.inserting.insert_function import insert_article
+from harrispierce.articles_db_insertion.insert_function import insert_article
 
 from harrispierceDjango.settings.local import DATABASES
 
@@ -15,13 +15,7 @@ myConnection = psycopg2.connect(host=hostname, user=username, password=password,
 
 for journal, urls in journals.items():
     for section, url in urls.items():
-        print(journal, section, url)
-        insert_article(myConnection, scrap(journal, section, url))
+        print('INSERTING FOR: ', journal, section, url)
+        insert_article(scrap(journal, section, url))
 
-myConnection.close()
-
-
-
-
-
-
+#myConnection.close()

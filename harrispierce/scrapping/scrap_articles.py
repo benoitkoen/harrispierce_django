@@ -49,6 +49,7 @@ class FTScrapingMachine:
             return 'void'
 
         tree = html.fromstring(result.content)
+        print('tree', tree[1][:1000])
 
         paragraphes = tree.xpath("//div[@class='article__body n-content-body']/p/text()")
 

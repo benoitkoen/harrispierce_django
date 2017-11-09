@@ -23,10 +23,10 @@ def scrap(scrapper, journal, section, url):
     elif journal == 'Financial Times':
         res = exception_handler(scrapft(scrapper, journal, section, url))
 
-    elif (journal == 'New York Times') & (section in ['Tech', 'World', 'Politics']):
+    elif (journal == 'New York Times') & (section in ['Tech', 'World', 'Politics', 'Economy']):
         res = exception_handler(scrapnyt1(scrapper, journal, section, url))
 
-    elif (journal == 'New York Times') & (section in ['Dealbook', 'Economy', 'Energy']):
+    elif (journal == 'New York Times') & (section in ['Dealbook', 'Energy']):
         res = exception_handler(scrapnyt2(scrapper, journal, section, url))
 
     elif journal == 'Les Echos':
