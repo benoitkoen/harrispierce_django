@@ -1,20 +1,8 @@
-#import psycopg2
-
-from harrispierceDjango.settings.local import DATABASES
-
 from harrispierce.articles_db_insertion.insert_function import insert_article
-from harrispierce.articles_db_insertion.check_data import retrieve_data
 from harrispierce.scrapping.scrap_urls import journals
 from harrispierce.scrapping.scrap import scrap
 from harrispierce.scrapping.scrap_articles import FTScrapingMachine
 from harrispierce.util.config import ScrappingConfig
-
-#hostname = ''
-#username = DATABASES['default']['USER']  # 'postgres'
-#password = ''
-#database = DATABASES['default']['NAME']  # 'postgres'
-
-#myConnection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
 
 if __name__ == '__main__':
 

@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from ..models import Article, Journal, Section
 
 
