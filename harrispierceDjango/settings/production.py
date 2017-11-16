@@ -30,7 +30,7 @@ SECRET_KEY = Config.secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['harrispierce.herokuapp.com', '.harrispierce.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'harrispierce.herokuapp.com', '.harrispierce.com']
 
 
 # Application definition
